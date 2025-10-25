@@ -3,17 +3,19 @@ import React from "react";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="relative">
-      <div className="absolute inset-0">
+    <div className="relative min-h-screen overflow-x-hidden">
+      <div className="fixed inset-0 -z-10">
         <Image
           src="/background.jpg"
           alt="Background"
           fill
-          className="object-cover object-center opacity-30"
+          className="object-cover object-center opacity-35"
+          draggable={false}
           priority
         />
       </div>
-      {children}
+
+      <main className="relative z-10">{children}</main>
     </div>
   );
 };
