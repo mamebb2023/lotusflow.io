@@ -11,15 +11,13 @@ const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const baseStyles =
-    "flex-center px-4 py-2 rounded-xl font-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer transition-all";
+    "flex-center px-4 py-2 rounded-xl font-sm transition-colors duration-200 focus:outline-none focus:ring-0 cursor-pointer transition-all active:scale-95";
 
   const variantStyles = {
     default:
-      "bg-gradient-to-b from-pink-400 via-pink-400 to-pink-600 text-white hover:bg-blue-700 focus:ring-blue-500 hover:opacity-95",
-    ghost:
-      "bg-transparent text-gray-200 hover:bg-gray-500/30 focus:ring-blue-500",
-    outline:
-      "border border-blue-600 text-blue-600 hover:bg-blue-50 focus:ring-blue-500",
+      "bg-gradient-to-b from-pink-400 via-pink-400 to-pink-600 text-white hover:opacity-95",
+    ghost: "bg-transparent text-gray-200 hover:bg-gray-500/30 hover:text-white",
+    outline: "border border-pink-600 text-pink-600 hover:bg-pink-50",
   };
 
   return (

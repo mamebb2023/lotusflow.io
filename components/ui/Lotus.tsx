@@ -13,7 +13,7 @@ interface LotusProps {
 
 const Lotus: React.FC<LotusProps> = ({
   size = "h-[600px] w-[280px]",
-  gradient = "bg-gradient-to-b from-pink-200 to-pink-500",
+  gradient = "bg-gradient-to-b from-pink-200/80 to-pink-500",
   petalCount = 7,
   animatePetals = true,
 }) => {
@@ -79,7 +79,7 @@ const Lotus: React.FC<LotusProps> = ({
   }, [animatePetals, petals]);
 
   return (
-    <div className="absolute inset-0 flex items-center justify-center">
+    <div className="relative flex items-center justify-center min-w-20">
       {petals.map((_, index) => (
         <motion.div
           key={index}
