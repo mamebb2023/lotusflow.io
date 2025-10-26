@@ -5,6 +5,7 @@ import Link from "next/link";
 import { FiMenu, FiX } from "react-icons/fi";
 import Logo from "./ui/Logo";
 import Button from "./ui/Button";
+import { AnimatePresence } from "framer-motion";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -83,32 +84,34 @@ export default function Header() {
       </div>
 
       {/* Mobile Menu */}
-      {mobileOpen && (
-        <div className="md:hidden bg-black/80 backdrop-blur-sm shadow-sm">
-          <div className="px-4 pt-2 pb-4 space-y-2">
-            <Link href="#features" className="block text-white/90 py-2">
-              Features
-            </Link>
-            <Link href="#pricing" className="block text-white/90 py-2">
-              Pricing
-            </Link>
-            <Link href="#docs" className="block text-white/90 py-2">
-              Docs
-            </Link>
-            <div className="pt-2 border-t border-white/5">
-              <Link href="/signup" className="block py-2 text-white/90">
-                Sign up
+      <AnimatePresence>
+        {mobileOpen && (
+          <div className="fixed left-0 md:hidden bg-black/80 backdrop-blur-sm shadow-sm">
+            <div className="px-4 pt-2 pb-4 space-y-2">
+              <Link href="#features" className="block text-white/90 py-2">
+                Features
               </Link>
-              <Link
-                href="/trial"
-                className="block mt-2 py-2 font-semibold bg-white text-black rounded-md text-center"
-              >
-                Try for free
+              <Link href="#pricing" className="block text-white/90 py-2">
+                Pricing
               </Link>
+              <Link href="#docs" className="block text-white/90 py-2">
+                Docs
+              </Link>
+              <div className="pt-2 border-t border-white/5">
+                <Link href="/signup" className="block py-2 text-white/90">
+                  Sign up
+                </Link>
+                <Link
+                  href="/trial"
+                  className="block mt-2 py-2 font-semibold bg-white text-black rounded-md text-center"
+                >
+                  Try for free
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </AnimatePresence>
     </header>
   );
 }

@@ -4,45 +4,70 @@ import Logo from "../ui/Logo";
 import Lotus from "../ui/Lotus";
 import { FiSend } from "react-icons/fi";
 import Button from "../ui/Button";
+import { ReactTyped } from "react-typed";
+import { motion } from "framer-motion";
+import { ScrollParallax } from "react-just-parallax";
 
 const Hero = () => {
   return (
-    <div className="relative min-h-screen flex flex-col">
-      {/* Lotus background */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex items-center justify-center h-[50vh]">
-        <Lotus />
-      </div>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="relative min-h-screen flex flex-col"
+    >
+      <ScrollParallax isAbsolutelyPositioned strength={-0.5}>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="absolute bottom-0 left-1/2  -translate-x-1/2 size-[600px] bg-pink-400/40 blur-3xl rounded-full"
+        />
+      </ScrollParallax>
 
-      {/* Main content */}
-      <div className="relative h-[90vh] flex-center flex-col gap-5">
-        {/* Logo */}
+      <ScrollParallax isAbsolutelyPositioned strength={0.1}>
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex items-center justify-center h-[50vh]">
+          <Lotus />
+        </div>
+      </ScrollParallax>
+
+      <div className="relative h-[95vh] flex-center flex-col gap-5">
         <div className="flex gap-2">
           <Logo />
           <p className="text-white text-2xl font-semibold">LotusFlow</p>
         </div>
 
-        {/* Heading */}
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-pink-300">
-          Craft Your Component
+          Craft Your{" "}
+          <ReactTyped
+            strings={[
+              "Component",
+              "Button",
+              "Card",
+              "Header",
+              "Footer",
+              "Input",
+              "Hero",
+            ]}
+            typeSpeed={80}
+            backSpeed={40}
+            backDelay={3000}
+            loop
+          />
         </h1>
-        <p className="text-gray-300 text-lg max-w-xl">
-          Create your beautiful single components effortlessly
+        <p className="text-gray-200 text-md md:text-lg max-w-xl text-center">
+          Create your custom, beautiful single components effortlessly <br />{" "}
+          Then just copy paste
         </p>
 
-        {/* Input area */}
-        <div className="relative w-full max-w-2xl mt-6">
-          <div className="bg-[#1e1e1e]/95 backdrop-blur-sm border border-pink-300 rounded-2xl focus-within:ring-2 focus-within:ring-pink-300 transition-all overflow-hidden">
+        <div className="relative w-full max-w-2xl mt-3 p-4">
+          <div className="bg-[#1e1e1e]/90 backdrop-blur-sm border border-pink-300 rounded-2xl focus-within:ring-2 focus-within:ring-pink-300 transition-all overflow-hidden">
             <div className="flex flex-col ">
-              {/* Top: text area, add bg-[#303030] */}
-              <div className="flex-1 px-4 pt-3 rounded-2xl">
+              <div className="flex-1 px-5 pt-3 rounded-2xl">
                 <textarea
-                  placeholder="Ask LotusFlow to create a componet..."
-                  rows={1}
-                  className="w-full resize-none bg-transparent text-sm text-white placeholder-gray-400 outline-none overflow-x-auto overflow-y-hidden max-h-[180px] transition-all duration-200"
+                  placeholder="Ask LotusFlow to create a component..."
+                  className="w-full resize-y max-h-[180px] placeholder-gray-400 outline-none transition-all duration-200"
                 />
               </div>
 
-              {/* Bottom: buttons row */}
               <div className="flex items-center justify-between border-[#2b2b2b] px-3 py-2">
                 <div className="flex items-center gap-2"></div>
 
@@ -56,7 +81,7 @@ const Hero = () => {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

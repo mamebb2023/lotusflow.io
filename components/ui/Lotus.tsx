@@ -13,7 +13,7 @@ interface LotusProps {
 
 const Lotus: React.FC<LotusProps> = ({
   size = "h-[600px] w-[280px]",
-  gradient = "bg-gradient-to-b from-pink-200/80 to-pink-500",
+  gradient = "bg-gradient-to-b from-[2%] from-pink-700/80 via-[40%] via-pink-400 to-[70%] to-white/70",
   petalCount = 7,
   animatePetals = true,
 }) => {
