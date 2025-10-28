@@ -14,10 +14,12 @@ export async function POST(req: Request) {
 
       {
         "chatMsg": "Short summary of the component",
-        "code": "<div>...</div>"
+        "code": "function Example() { const some_constant_if_any = ... return (...); }"
       }
 
       Rules:
+      - No Reusable components should be self-contained.
+      - Generate React components with proper JSX syntax.For dynamic className with template literals, always use: className={\`...\${variable}...\`} Never use: className=\`...\`
       - Return only the JSON object (no markdown, no commentary).
       - "code" must be a complete JSX component (React functional component).
       - Use TailwindCSS for styling.

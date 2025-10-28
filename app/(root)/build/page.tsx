@@ -14,7 +14,6 @@ const Page = () => {
   const [activeTab, setActiveTab] = useState("preview");
   const [collapsed, setCollapsed] = useState(false);
 
-  // 🧠 NEW STATES
   const [messages, setMessages] = useState<
     { role: "user" | "assistant"; text: string }[]
   >([]);
@@ -27,7 +26,6 @@ const Page = () => {
     { id: "code", label: "Code", icon: IoCodeSlash },
   ];
 
-  // ⚙️ Send prompt to AI (this should hit your backend route /api/generate)
   const handleSend = async () => {
     if (!input.trim()) return;
 
@@ -35,6 +33,7 @@ const Page = () => {
       role: "user",
       text: input,
     };
+
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
     setLoading(true);
@@ -52,6 +51,7 @@ const Page = () => {
         role: "assistant",
         text: data.chatMsg,
       };
+
       setMessages((prev) => [...prev, aiMsg]);
       setGeneratedCode(data.code);
     } catch (err) {
@@ -181,17 +181,7 @@ const Page = () => {
               transition={{ duration: 0.15 }}
               className="absolute inset-0"
             >
-              {activeTab === "preview" && (
-                <div className="h-full rounded-lg p-4 overflow-auto text-black">
-                  {/* 🧩 Try to render generated JSX safely */}
-                  <Preview code={generatedCode} />
-                </div>
-              )}
-              {activeTab === "code" && (
-                <pre className="bg-[#111] text-green-400 text-sm p-4 rounded-lg overflow-auto h-full">
-                  {generatedCode || "No code generated yet."}
-                </pre>
-              )}
+              <Preview code={generatedCode} activeTab={activeTab} />
             </motion.div>
           </AnimatePresence>
         </div>
@@ -199,63 +189,5 @@ const Page = () => {
     </div>
   );
 };
-
-// 🧩 Renders JSX safely
-// const Preview = ({ code }: { code: string }) => {
-//   const { Comp, error } = React.useMemo(() => {
-//     if (!code?.trim()) return { Comp: null, error: null };
-
-//     try {
-//       // 🧹 Step 1: Strip out imports/exports/comments
-//       const cleaned = code
-//         .replace(/import[^;]+;/g, "")
-//         .replace(/export\s+default\s+[^;]+;/g, "")
-//         .replace(/export\s+\{[^}]+\};/g, "")
-//         .replace(/\/\*[\s\S]*?\*\//g, "") // remove /* comments */
-//         .replace(/\/\/.*/g, ""); // remove // comments
-
-//       // 🧠 Step 2: Extract content between return ( ... )
-//       const match = cleaned.match(/return\s*\(([\s\S]*?)\);/);
-
-//       if (!match || !match[1]) {
-//         throw new Error("Could not extract JSX from return statement");
-//       }
-
-//       const jsxBody = match[1].trim();
-
-//       // 🧩 Step 3: Wrap it into a simple functional component
-//       const safeCode = `(function PreviewComponent() { return (${jsxBody}); })`;
-
-//       // 🧪 Step 4: Evaluate safely
-//       const componentFactory = new Function("React", `return ${safeCode}`)(
-//         React
-//       );
-
-//       if (typeof componentFactory === "function") {
-//         return { Comp: componentFactory, error: null };
-//       }
-
-//       throw new Error("Invalid component structure");
-//     } catch (e) {
-//       console.error("Preview error:", e);
-//       return { Comp: null, error: e as Error };
-//     }
-//   }, [code]);
-
-//   if (error || !Comp) {
-//     return (
-//       <p className="text-gray-500 text-center text-sm">
-//         {error ? `Preview Error: ${error.message}` : "Preview unavailable."}
-//       </p>
-//     );
-//   }
-
-//   const RenderComp = Comp as React.ComponentType<unknown>;
-//   return (
-//     <div className="p-4 border rounded-lg bg-white text-black">
-//       <RenderComp />
-//     </div>
-//   );
-// };
 
 export default Page;
