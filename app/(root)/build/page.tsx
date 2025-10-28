@@ -65,7 +65,7 @@ const Page = () => {
     <div className="flex h-screen overflow-hidden">
       {/* Left Section - Chat */}
       <motion.div
-        animate={{ width: collapsed ? "70px" : "350px" }}
+        animate={{ width: collapsed ? "70px" : "400px" }}
         transition={{ duration: 0.3 }}
         className="bg-[#151515] flex flex-col p-2 gap-4 overflow-hidden"
       >
@@ -85,7 +85,11 @@ const Page = () => {
             )}
           </AnimatePresence>
 
-          <Button variant="ghost" onClick={() => setCollapsed((v) => !v)}>
+          <Button
+            variant="ghost"
+            className="px-2!"
+            onClick={() => setCollapsed((v) => !v)}
+          >
             <motion.div
               animate={{ rotate: collapsed ? 180 : 0 }}
               transition={{ duration: 0.25 }}
@@ -99,7 +103,7 @@ const Page = () => {
         <motion.div
           animate={{ opacity: collapsed ? 0 : 1 }}
           transition={{ duration: 0.25 }}
-          className={`flex-1 overflow-y-auto flex flex-col gap-2 ${
+          className={`flex-1 overflow-y-auto flex flex-col gap-2 p-2 ${
             collapsed ? "pointer-events-none" : ""
           }`}
         >
