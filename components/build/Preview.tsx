@@ -37,7 +37,6 @@ export const Preview = ({ code, activeTab }: Props) => {
           </div>
 
           <style jsx global>{`
-            @import "tailwindcss";
             .npm__react-simple-code-editor__textarea,
             .npm__react-simple-code-editor__textarea:focus {
               outline: none !important;
