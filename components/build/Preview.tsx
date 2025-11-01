@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as Babel from "@babel/standalone";
 import { motion, AnimatePresence } from "framer-motion";
-import { IoLogoReact } from "react-icons/io5";
+import Code from "./Code";
 
 interface Props {
   code: string;
@@ -98,8 +98,14 @@ export const Preview = ({ code, activeTab }: Props) => {
               }
               body {
                 font-family: system-ui, -apple-system, sans-serif;
-                background: white;
+                background: transparent;
                 overflow: auto;
+              }
+              #root {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                paddding: 4px;
               }
             </style>
           </head>
@@ -138,10 +144,6 @@ export const Preview = ({ code, activeTab }: Props) => {
     }
   }, [code]);
 
-  // Calculate line numbers
-  const lines = code.split("\n");
-  const lineNumbers = lines.map((_, i) => i + 1);
-
   return (
     <div className="relative h-full w-full rounded-xl overflow-hidden">
       <AnimatePresence mode="wait">
@@ -176,46 +178,7 @@ export const Preview = ({ code, activeTab }: Props) => {
             )}
           </motion.div>
         ) : (
-          <motion.div
-            key="code"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="absolute inset-0 flex flex-col bg-[#1e1e1e]"
-          >
-            {/* File Tab Header */}
-            <div className="bg-[#151515] flex items-center flex-shrink-0">
-              <div className="flex items-center gap-2 px-4 py-2 bg-[#1e1e1e] text-sm text-gray-300">
-                <IoLogoReact className="text-[#61dafb]" size={16} />
-                <span>component.jsx</span>
-              </div>
-              <div className="flex-1 bg-[#151515]" />
-            </div>
-
-            {/* Code Editor */}
-            <div className="flex-1 overflow-auto bg-[#1e1e1e]">
-              <div className="flex min-h-full">
-                {/* Line Numbers */}
-                <div className="bg-[#151515] border-r border-[#333] px-4 py-3 select-none flex-shrink-0">
-                  {lineNumbers.map((num) => (
-                    <div
-                      key={num}
-                      className="text-[#858585] text-right font-mono text-sm leading-6"
-                      style={{ height: "24px" }}
-                    >
-                      {num}
-                    </div>
-                  ))}
-                </div>
-
-                {/* Code Content */}
-                <pre className="flex-1 p-3 text-sm font-mono text-gray-200 leading-6 overflow-x-auto bg-[#1e1e1e]">
-                  <code>{code.trim() || "// No code provided"}</code>
-                </pre>
-              </div>
-            </div>
-          </motion.div>
+          <Code code={code} />
         )}
       </AnimatePresence>
     </div>

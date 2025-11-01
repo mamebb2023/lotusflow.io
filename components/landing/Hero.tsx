@@ -7,8 +7,28 @@ import Button from "../ui/Button";
 import { ReactTyped } from "react-typed";
 import { motion } from "framer-motion";
 import { ScrollParallax } from "react-just-parallax";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const Hero = () => {
+  const router = useRouter();
+  const [prompt, setPrompt] = useState("");
+
+  const handleSend = () => {
+    if (!prompt.trim()) return;
+
+    // Encode the prompt and redirect to /build with query parameter
+    const encodedPrompt = encodeURIComponent(prompt.trim());
+    router.push(`/build?prompt=${encodedPrompt}`);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -64,7 +84,10 @@ const Hero = () => {
               <div className="flex-1 px-5 pt-3 rounded-2xl">
                 <textarea
                   placeholder="Ask LotusFlow to create a component..."
-                  className="w-full resize-y max-h-[180px] placeholder-gray-400 outline-none transition-all duration-200"
+                  value={prompt}
+                  onChange={(e) => setPrompt(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  className="w-full resize-y max-h-[180px] placeholder-gray-400 outline-none transition-all duration-200 bg-transparent text-white"
                 />
               </div>
 
@@ -72,7 +95,11 @@ const Hero = () => {
                 <div className="flex items-center gap-2"></div>
 
                 <div className="flex items-center gap-2">
-                  <Button className="px-2! border! border-gray-500/20">
+                  <Button
+                    onClick={handleSend}
+                    disabled={!prompt.trim()}
+                    className="px-2! border! border-gray-500/20"
+                  >
                     <FiSend size={20} />
                   </Button>
                 </div>

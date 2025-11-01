@@ -4,14 +4,16 @@ import { Preview } from "@/components/build/Preview";
 import Button from "@/components/ui/Button";
 import Logo from "@/components/ui/Logo";
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FiSend, FiZap } from "react-icons/fi";
 import { IoCodeSlash } from "react-icons/io5";
 import { MdOutlineMonitor } from "react-icons/md";
 import { TbLayoutSidebarLeftCollapse } from "react-icons/tb";
 import { RiSparklingFill } from "react-icons/ri";
+import { useSearchParams } from "next/navigation";
 
 const Page = () => {
+  const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState("preview");
   const [collapsed, setCollapsed] = useState(false);
 
@@ -34,6 +36,49 @@ const Page = () => {
     "Make a testimonial carousel component",
   ];
 
+  // Handle URL prompt on component mount
+  useEffect(() => {
+    const urlPrompt = searchParams.get("prompt");
+    if (urlPrompt) {
+      setInput(urlPrompt);
+    }
+  }, [searchParams]);
+
+  // const handleSendWithPrompt = async (promptText: string) => {
+  //   if (!promptText.trim()) return;
+
+  //   const userMsg: { role: "user" | "assistant"; text: string } = {
+  //     role: "user",
+  //     text: promptText,
+  //   };
+
+  //   setMessages([userMsg]);
+  //   setInput("");
+  //   setLoading(true);
+
+  //   try {
+  //     const res = await fetch("/api/generate", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({ prompt: promptText }),
+  //     });
+
+  //     const data = await res.json();
+
+  //     const aiMsg: { role: "user" | "assistant"; text: string } = {
+  //       role: "assistant",
+  //       text: data.chatMsg,
+  //     };
+
+  //     setMessages((prev) => [...prev, aiMsg]);
+  //     setGeneratedCode(data.code);
+  //   } catch (err) {
+  //     console.error(err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const handleSend = async () => {
     if (!input.trim()) return;
 
@@ -43,6 +88,7 @@ const Page = () => {
     };
 
     setMessages((prev) => [...prev, userMsg]);
+    const currentInput = input;
     setInput("");
     setLoading(true);
 
@@ -50,7 +96,7 @@ const Page = () => {
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: input }),
+        body: JSON.stringify({ prompt: currentInput }),
       });
 
       const data = await res.json();
@@ -82,7 +128,7 @@ const Page = () => {
       {/* Left Section - Chat */}
       <motion.div
         animate={{ width: collapsed ? "70px" : "400px" }}
-        transition={{ duration: 0.3, delay: 0.5 }}
+        transition={{ duration: 0.3 }}
         className="bg-[#151515] flex flex-col p-2 gap-4 overflow-hidden max-w-[400px]"
       >
         <div className="flex items-center justify-between">

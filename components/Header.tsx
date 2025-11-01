@@ -6,7 +6,6 @@ import { FiMenu, FiX } from "react-icons/fi";
 import Logo from "./ui/Logo";
 import Button from "./ui/Button";
 import { AnimatePresence, motion } from "framer-motion";
-import Image from "next/image";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
