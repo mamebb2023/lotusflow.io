@@ -32,8 +32,8 @@
 }
 
 ::selection {
-  background-color: #a200a2;
-  color: #ffdefd;
+  background-color: #380038;
+  color: #ff71f6;
 }
 
 ::-webkit-scrollbar {
@@ -42,7 +42,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: black !important;
+  background-color: rgb(106, 65, 112) !important;
   opacity: 0.3;
   border-radius: 4px;
 }

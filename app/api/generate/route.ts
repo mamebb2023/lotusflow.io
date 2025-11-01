@@ -5,7 +5,14 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 export async function POST(req: Request) {
   try {
-    const { prompt } = await req.json();
+    const { prompt, message } = await req.json();
+    const userPrompt = prompt || message;
+    if (!userPrompt) {
+      return NextResponse.json(
+        { chatMsg: "Missing prompt", code: "" },
+        { status: 400 }
+      );
+    }
 
     const systemPrompt = `
       You are LotusFlow — an AI that generates clean React components using TailwindCSS.
@@ -14,7 +21,7 @@ export async function POST(req: Request) {
 
       {
         "chatMsg": "Short summary of the component",
-        "code": "function Example() { return (...); }"
+        "code": "<div>...</div> or <button>...</button>"
       }
 
       CRITICAL RULES:
@@ -39,22 +46,25 @@ export async function POST(req: Request) {
         );
       }
 
+      IMPORTANT:
+      - Keep the component concise and focused on the main functionality
+      - Prioritize clarity and simplicity in the generated code
+
       WRONG - DO NOT DO THIS:
+      - If a reusable component is generated, set the variables for a default values
       - Creating Card, Button, or other reusable components separately 
       - Extracting logic into helper components
       - Using multiple function declarations
     `;
 
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
-
-    const result = await model.generateContent([systemPrompt, prompt]);
+    const result = await model.generateContent([systemPrompt, userPrompt]);
     const text = result.response.text();
 
-    // Remove code fences or backticks Gemini sometimes adds
     const cleaned = text.replace(/```json|```/g, "").trim();
 
-    // Try to parse the JSON safely
     let data;
+    
     try {
       data = JSON.parse(cleaned);
     } catch (err) {
@@ -62,7 +72,7 @@ export async function POST(req: Request) {
       data = { chatMsg: "Generation failed", code: "" };
     }
 
-    console.log("data", data);
+    console.log("data", data)
 
     return NextResponse.json(data);
   } catch (error) {

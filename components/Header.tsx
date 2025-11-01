@@ -27,8 +27,8 @@ export default function Header() {
   ];
 
   const mobileActions = [
-    { href: "/signup", label: "Sign up", variant: "ghost" },
-    { href: "/trial", label: "Try for free", variant: "solid" },
+    { href: "/build", label: "Sign up", variant: "ghost" },
+    { href: "/build", label: "Try for free", variant: "solid" },
   ];
 
   return (
@@ -60,10 +60,10 @@ export default function Header() {
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center justify-end w-[33%]">
             <div className="flex-center gap-3">
-              <Link href="/login" className="text-sm">
+              <Link href="/" className="text-sm">
                 <Button variant="ghost">Login</Button>
               </Link>
-              <Link href="/dashboard">
+              <Link href="/build">
                 <Button>Try for free</Button>
               </Link>
             </div>
