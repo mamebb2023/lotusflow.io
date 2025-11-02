@@ -4,7 +4,7 @@ import { Preview } from "@/components/build/Preview";
 import Button from "@/components/ui/Button";
 import Logo from "@/components/ui/Logo";
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { FiSend, FiZap } from "react-icons/fi";
 import { IoCodeSlash } from "react-icons/io5";
 import { MdOutlineMonitor } from "react-icons/md";
@@ -12,7 +12,8 @@ import { TbLayoutSidebarLeftCollapse } from "react-icons/tb";
 import { RiSparklingFill } from "react-icons/ri";
 import { useSearchParams } from "next/navigation";
 
-const Page = () => {
+// Separate component that uses useSearchParams
+const BuildContent = () => {
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState("preview");
   const [collapsed, setCollapsed] = useState(false);
@@ -43,41 +44,6 @@ const Page = () => {
       setInput(urlPrompt);
     }
   }, [searchParams]);
-
-  // const handleSendWithPrompt = async (promptText: string) => {
-  //   if (!promptText.trim()) return;
-
-  //   const userMsg: { role: "user" | "assistant"; text: string } = {
-  //     role: "user",
-  //     text: promptText,
-  //   };
-
-  //   setMessages([userMsg]);
-  //   setInput("");
-  //   setLoading(true);
-
-  //   try {
-  //     const res = await fetch("/api/generate", {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({ prompt: promptText }),
-  //     });
-
-  //     const data = await res.json();
-
-  //     const aiMsg: { role: "user" | "assistant"; text: string } = {
-  //       role: "assistant",
-  //       text: data.chatMsg,
-  //     };
-
-  //     setMessages((prev) => [...prev, aiMsg]);
-  //     setGeneratedCode(data.code);
-  //   } catch (err) {
-  //     console.error(err);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   const handleSend = async () => {
     if (!input.trim()) return;
@@ -113,10 +79,6 @@ const Page = () => {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleExampleClick = (prompt: string) => {
-    setInput(prompt);
   };
 
   return (
@@ -177,7 +139,7 @@ const Page = () => {
                 transition={{ duration: 0.5 }}
                 className="mb-4"
               >
-                <div className="w-16 h-16 bg-linear-to-br from-pink-500 to-purple-600 rounded-2xl flex items-center justify-center mb-4">
+                <div className="w-16 h-16 bg-gradient-to-br from-pink-500 to-purple-600 rounded-2xl flex items-center justify-center mb-4">
                   <RiSparklingFill className="text-white text-3xl" />
                 </div>
               </motion.div>
@@ -200,7 +162,9 @@ const Page = () => {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.1 }}
-                    onClick={() => handleExampleClick(prompt)}
+                    onClick={() => (prompt: string) => {
+                      setInput(prompt);
+                    }}
                     className="w-full text-left px-3 py-2 bg-[#1e1e1e] hover:bg-[#252525] border border-gray-800 hover:border-pink-500/30 rounded-lg text-sm text-gray-300 transition-all duration-200 group"
                   >
                     <span className="flex items-center gap-2">
@@ -298,7 +262,7 @@ const Page = () => {
                 transition={{ duration: 0.6 }}
                 className="text-center max-w-md"
               >
-                <div className="w-20 h-20 bg-linear-to-br from-pink-500/20 to-purple-600/20 rounded-3xl flex items-center justify-center mx-auto mb-6">
+                <div className="w-20 h-20 bg-gradient-to-br from-pink-500/20 to-purple-600/20 rounded-3xl flex items-center justify-center mx-auto mb-6">
                   <IoCodeSlash className="text-pink-500 text-4xl" />
                 </div>
                 <h2 className="text-2xl font-bold text-white mb-3">
@@ -330,6 +294,24 @@ const Page = () => {
         </div>
       </div>
     </motion.div>
+  );
+};
+
+// Main page component with Suspense boundary
+const Page = () => {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex h-screen items-center justify-center bg-black">
+          <div className="text-center">
+            <div className="w-16 h-16 border-4 border-pink-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+            <p className="text-gray-400">Loading...</p>
+          </div>
+        </div>
+      }
+    >
+      <BuildContent />
+    </Suspense>
   );
 };
 
