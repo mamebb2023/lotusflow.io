@@ -1,14 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as Babel from "@babel/standalone";
-import { motion, AnimatePresence } from "framer-motion";
-import Code from "./Code";
+import { motion } from "framer-motion";
 
 interface Props {
   code: string;
-  activeTab: "preview" | "code";
 }
 
-export const Preview = ({ code, activeTab }: Props) => {
+export const Preview = ({ code }: Props) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [previewHtml, setPreviewHtml] = useState("");
   const [error, setError] = useState<string>("");
@@ -102,9 +100,10 @@ export const Preview = ({ code, activeTab }: Props) => {
                 overflow: auto;
               }
               #root {
-                display: flex;
-                align-items: center;
-                justify-content: center;
+                // display: flex;
+                // align-items: center;
+                // justify-content: center;
+                shrink: 0;
                 paddding: 4px;
               }
             </style>
@@ -145,42 +144,36 @@ export const Preview = ({ code, activeTab }: Props) => {
   }, [code]);
 
   return (
-    <div className="relative h-full w-full rounded-xl overflow-hidden">
-      <AnimatePresence mode="wait">
-        {activeTab === "preview" ? (
-          <motion.div
-            key="preview"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="absolute inset-0"
-          >
-            {error ? (
-              <div className="w-full h-full flex items-center justify-center p-4">
-                <div className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-2xl">
-                  <h3 className="text-red-800 font-semibold mb-2 flex items-center gap-2">
-                    Compilation Error
-                  </h3>
-                  <pre className="text-sm text-red-700 whitespace-pre-wrap font-mono">
-                    {error}
-                  </pre>
-                </div>
-              </div>
-            ) : (
-              <iframe
-                ref={iframeRef}
-                srcDoc={previewHtml}
-                title="Component Preview"
-                className="w-full h-full border-0"
-                sandbox="allow-scripts allow-same-origin"
-              />
-            )}
-          </motion.div>
+    <div className="relative h-full w-full">
+      <motion.div
+        key="preview"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        className="absolute inset-0"
+      >
+        {error ? (
+          <div className="w-full h-full flex items-center justify-center p-4">
+            <div className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-2xl">
+              <h3 className="text-red-800 font-semibold mb-2 flex items-center gap-2">
+                Compilation Error
+              </h3>
+              <pre className="text-sm text-red-700 whitespace-pre-wrap font-mono">
+                {error}
+              </pre>
+            </div>
+          </div>
         ) : (
-          <Code code={code} />
+          <iframe
+            ref={iframeRef}
+            srcDoc={previewHtml}
+            title="Component Preview"
+            className="w-full h-full border-0"
+            sandbox="allow-scripts allow-same-origin"
+          />
         )}
-      </AnimatePresence>
+      </motion.div>
     </div>
   );
 };

@@ -11,6 +11,7 @@ import { MdOutlineMonitor } from "react-icons/md";
 import { TbLayoutSidebarLeftCollapse } from "react-icons/tb";
 import { RiSparklingFill } from "react-icons/ri";
 import { useSearchParams } from "next/navigation";
+import Code from "@/components/build/Code";
 
 // Separate component that uses useSearchParams
 const BuildContent = () => {
@@ -183,7 +184,7 @@ const BuildContent = () => {
               {messages.map((m, i) => (
                 <div
                   key={i}
-                  className={`text-sm px-3 py-2 max-w-[90%] ${
+                  className={`text-sm px-3 py-2 max-w-[90%] overflow-hidden ${
                     m.role === "user"
                       ? "bg-pink-500/20 self-end text-pink-200 rounded-t-xl rounded-bl-xl"
                       : "text-gray-300"
@@ -282,12 +283,10 @@ const BuildContent = () => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.15 }}
-                className="absolute inset-0 rounded-lg"
+                className="absolute inset-0 rounded-lg rounded-xl overflow-hidden"
               >
-                <Preview
-                  code={generatedCode}
-                  activeTab={activeTab as "preview" | "code"}
-                />
+                {activeTab === "preview" && <Preview code={generatedCode} />}
+                {activeTab === "code" && <Code code={generatedCode} />}
               </motion.div>
             </AnimatePresence>
           )}
