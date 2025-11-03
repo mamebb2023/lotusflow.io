@@ -5,6 +5,7 @@ export default function Page() {
   return (
     <>
       <Hero />
+      <div className="h-[50vh]"></div>
       <Features />
     </>
   );

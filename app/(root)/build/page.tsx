@@ -12,6 +12,7 @@ import { TbLayoutSidebarLeftCollapse } from "react-icons/tb";
 import { RiSparklingFill } from "react-icons/ri";
 import { useSearchParams } from "next/navigation";
 import Code from "@/components/build/Code";
+import Loading from "@/components/ui/Loading";
 
 // Separate component that uses useSearchParams
 const BuildContent = () => {
@@ -38,16 +39,54 @@ const BuildContent = () => {
     "Make a testimonial carousel component",
   ];
 
-  // Handle URL prompt on component mount
+  // Handle URL prompt on component mount - run immediately
   useEffect(() => {
     const urlPrompt = searchParams.get("prompt");
     if (urlPrompt) {
-      setInput(urlPrompt);
+      // Automatically send the prompt
+      handleSendWithPrompt(urlPrompt);
     }
   }, [searchParams]);
 
+  // Function to send prompt programmatically
+  const handleSendWithPrompt = async (promptText: string) => {
+    if (!promptText.trim()) return;
+
+    const userMsg: { role: "user" | "assistant"; text: string } = {
+      role: "user",
+      text: promptText,
+    };
+
+    setMessages([userMsg]);
+    setInput("");
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: promptText }),
+      });
+
+      const data = await res.json();
+
+      const aiMsg: { role: "user" | "assistant"; text: string } = {
+        role: "assistant",
+        text: data.chatMsg,
+      };
+
+      setMessages((prev) => [...prev, aiMsg]);
+      setGeneratedCode(data.code);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSend = async () => {
     if (!input.trim()) return;
+    setGeneratedCode("");
 
     const userMsg: { role: "user" | "assistant"; text: string } = {
       role: "user",
@@ -82,6 +121,11 @@ const BuildContent = () => {
     }
   };
 
+  // Handle example prompt click - run immediately
+  const handleExampleClick = (prompt: string) => {
+    handleSendWithPrompt(prompt);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -92,7 +136,7 @@ const BuildContent = () => {
       <motion.div
         animate={{ width: collapsed ? "70px" : "400px" }}
         transition={{ duration: 0.3 }}
-        className="bg-[#151515] flex flex-col p-2 gap-4 overflow-hidden max-w-[400px]"
+        className="bg-[#151515] flex flex-col p-2 gap-4 max-w-[400px] overflow-y-hidden"
       >
         <div className="flex items-center justify-between">
           <AnimatePresence>
@@ -128,9 +172,10 @@ const BuildContent = () => {
         <motion.div
           animate={{ opacity: collapsed ? 0 : 1 }}
           transition={{ duration: 0.25 }}
-          className={`flex-1 overflow-y-auto flex flex-col gap-2 p-2 ${
+          className={`flex-1 overflow-y-auto overflow-x-hidden flex flex-col gap-2 p-2 ${
             collapsed ? "pointer-events-none" : ""
           }`}
+          style={{ minHeight: 0 }} // 🧠 important for flex children to allow scrolling
         >
           {messages.length === 0 && !loading ? (
             <div className="flex flex-col items-center justify-center h-full text-center px-4">
@@ -140,7 +185,7 @@ const BuildContent = () => {
                 transition={{ duration: 0.5 }}
                 className="mb-4"
               >
-                <div className="w-16 h-16 bg-gradient-to-br from-pink-500 to-purple-600 rounded-2xl flex items-center justify-center mb-4">
+                <div className="w-16 h-16 bg-linear-to-br from-pink-500 to-purple-600 rounded-2xl flex items-center justify-center mb-4">
                   <RiSparklingFill className="text-white text-3xl" />
                 </div>
               </motion.div>
@@ -163,9 +208,7 @@ const BuildContent = () => {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.1 }}
-                    onClick={() => (prompt: string) => {
-                      setInput(prompt);
-                    }}
+                    onClick={() => handleExampleClick(prompt)}
                     className="w-full text-left px-3 py-2 bg-[#1e1e1e] hover:bg-[#252525] border border-gray-800 hover:border-pink-500/30 rounded-lg text-sm text-gray-300 transition-all duration-200 group"
                   >
                     <span className="flex items-center gap-2">
@@ -184,7 +227,7 @@ const BuildContent = () => {
               {messages.map((m, i) => (
                 <div
                   key={i}
-                  className={`text-sm px-3 py-2 max-w-[90%] overflow-hidden ${
+                  className={`text-sm px-3 py-2 max-w-[90%] ${
                     m.role === "user"
                       ? "bg-pink-500/20 self-end text-pink-200 rounded-t-xl rounded-bl-xl"
                       : "text-gray-300"
@@ -194,8 +237,9 @@ const BuildContent = () => {
                 </div>
               ))}
               {loading && (
-                <p className="text-gray-400 text-xs px-3">
-                  Generating component...
+                <p className="text-gray-400 text-xs px-3 flex items-center">
+                  <Loading />{" "}
+                  <span className="ml-2">Generating component...</span>
                 </p>
               )}
             </>
@@ -207,22 +251,29 @@ const BuildContent = () => {
           animate={{ opacity: collapsed ? 0 : 1 }}
           transition={{ duration: 0.25 }}
         >
-          <div className="bg-[#1e1e1e]/90 border border-pink-300 rounded-2xl overflow-hidden p-1">
+          <div className="bg-[#1e1e1e]/90 border border-pink-300 rounded-2xl p-1">
             <div className="flex flex-col">
               <textarea
                 placeholder="Ask LotusFlow to build a button, card, or footer..."
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
+                onInput={(e) => {
+                  const target = e.target as HTMLTextAreaElement;
+                  target.style.height = "auto";
+                  target.style.height = `${target.scrollHeight}px`;
+                }}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && !e.shiftKey) {
                     e.preventDefault();
                     handleSend();
                   }
                 }}
-                className="flex-1 text-sm resize-none placeholder-gray-400 outline-none bg-transparent px-4 py-3"
+                className="w-full text-sm resize-none overflow-hidden placeholder-gray-400 outline-none bg-transparent px-4 py-3 min-h-10 max-h-[200px]"
               />
+
               <Button
                 onClick={handleSend}
+                loading={loading}
                 disabled={loading}
                 className="self-end px-2!"
               >
@@ -263,7 +314,7 @@ const BuildContent = () => {
                 transition={{ duration: 0.6 }}
                 className="text-center max-w-md"
               >
-                <div className="w-20 h-20 bg-gradient-to-br from-pink-500/20 to-purple-600/20 rounded-3xl flex items-center justify-center mx-auto mb-6">
+                <div className="w-20 h-20 bg-linear-to-br from-pink-500/20 to-purple-600/20 rounded-3xl flex items-center justify-center mx-auto mb-6">
                   <IoCodeSlash className="text-pink-500 text-4xl" />
                 </div>
                 <h2 className="text-2xl font-bold text-white mb-3">
@@ -283,7 +334,7 @@ const BuildContent = () => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.15 }}
-                className="absolute inset-0 rounded-lg rounded-xl overflow-hidden"
+                className="absolute inset-0 rounded-lg overflow-hidden"
               >
                 {activeTab === "preview" && <Preview code={generatedCode} />}
                 {activeTab === "code" && <Code code={generatedCode} />}

@@ -39,7 +39,7 @@ export async function POST(req: Request) {
       - NEVER use source.unsplash.com or unsplash.it - these are deprecated
       - For placeholder images, use one of these VALID services:
         * https://picsum.photos/WIDTH/HEIGHT (e.g., https://picsum.photos/400/300)
-        * https://placehold.co/WIDTHxHEIGHT (e.g., https://placehold.co/400x300)
+        * https://placehold.co/WIDTHxHEIGHT (e.g., https://placehold.co/400x300), use (720px max)
         * https://via.placeholder.com/WIDTHxHEIGHT (e.g., https://via.placeholder.com/400x300)
       - For specific themed images, use picsum.photos with size parameters
       - Always use HTTPS URLs for images

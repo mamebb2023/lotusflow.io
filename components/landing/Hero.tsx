@@ -75,7 +75,7 @@ const Hero = () => {
         </h1>
         <p className="text-gray-200 text-md md:text-lg max-w-xl text-center">
           Create your custom, beautiful single components effortlessly <br />{" "}
-          Then just copy paste
+          Then just copy & paste it
         </p>
 
         <div className="relative w-full max-w-2xl mt-3 p-4">
@@ -83,7 +83,7 @@ const Hero = () => {
             <div className="flex flex-col ">
               <div className="flex-1 px-5 pt-3 rounded-2xl">
                 <textarea
-                  placeholder="Ask LotusFlow to create a component..."
+                  placeholder="Ask LotusFlow to create your component..."
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
                   onKeyDown={handleKeyDown}

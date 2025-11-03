@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as Babel from "@babel/standalone";
 import { motion } from "framer-motion";
+import Loading from "../ui/Loading";
 
 interface Props {
   code: string;
@@ -164,7 +165,7 @@ export const Preview = ({ code }: Props) => {
               </pre>
             </div>
           </div>
-        ) : (
+        ) : previewHtml ? (
           <iframe
             ref={iframeRef}
             srcDoc={previewHtml}
@@ -172,6 +173,10 @@ export const Preview = ({ code }: Props) => {
             className="w-full h-full border-0"
             sandbox="allow-scripts allow-same-origin"
           />
+        ) : (
+          <div className="h-full flex-center gap-2">
+            <Loading /> <p>Cooking...</p>
+          </div>
         )}
       </motion.div>
     </div>
