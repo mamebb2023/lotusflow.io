@@ -22,7 +22,7 @@ const Button: React.FC<ButtonProps> = ({
     default:
       "bg-gradient-to-b from-pink-400 via-pink-400 to-pink-600 text-white hover:opacity-95",
     ghost:
-      "bg-transparent text-gray-200 hover:bg-gray-500/30 hover:text-white border border-transparent",
+      "bg-transparent text-gray-200 hover:bg-gray-500/30 border border-transparent",
     outline: "border border-pink-400 text-pink-400 hover:bg-pink-500/20",
   };
 
