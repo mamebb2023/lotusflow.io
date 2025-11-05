@@ -2,15 +2,15 @@
 @layer theme, base, components, utilities;
 
 :root {
-  --color-primary: #fdc700;
-  --color-secondary: #f6339a;
-  --color-tertiary: #2b7fff;
+  --color-primary: #f6339a;
+  --color-secondary: #6a4170;
+  --color-secondary-dark: #1b001d;
 }
 
 @theme inline {
   --color-primary: var(--color-primary);
   --color-secondary: var(--color-secondary);
-  --color-tertiary: var(--color-tertiary);
+  --color-secondary-dark: var(--color-secondary-dark);
 }
 
 @layer utilities {
