@@ -1,10 +1,40 @@
 "use client";
 
 import { motion } from "framer-motion";
-import React from "react";
+import React, { useState } from "react";
 import Button from "../ui/Button";
+import toast from "react-hot-toast";
 
 const CTA = () => {
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        toast.success("Thank you for signing up!");
+        setEmail(""); // clear input
+      } else {
+        toast.error(data.error || "Something went wrong. Please try again.");
+      }
+    } catch (err) {
+      toast.error("Network error. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <section className="relative h-[50vh] flex items-center justify-center text-white border-t border-white/10">
       <div className="max-w-2xl mx-auto text-center px-6">
@@ -15,7 +45,7 @@ const CTA = () => {
           transition={{ duration: 0.6 }}
           className="text-4xl font-bold mb-3"
         >
-          Be the first to experience{" "}
+          Be first to try{" "}
           <span className="text-transparent bg-clip-text bg-linear-to-r from-pink-400 to-purple-400">
             LotusFlow
           </span>
@@ -37,15 +67,21 @@ const CTA = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
+          onSubmit={handleSubmit}
           className="flex flex-col sm:flex-row gap-3 justify-center items-center"
         >
           <input
             type="email"
             placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
             className="w-full sm:w-72 px-4 py-2 rounded-lg bg-[#111] border border-white/10 text-white 
                        placeholder-gray-500 focus:outline-none focus:border-pink-400 transition"
           />
-          <Button type="submit">Notify Me</Button>
+          <Button type="submit" disabled={loading}>
+            Notify Me
+          </Button>
         </motion.form>
 
         {/* Optional small note */}
