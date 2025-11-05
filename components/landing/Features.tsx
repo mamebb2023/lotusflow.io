@@ -4,12 +4,13 @@ import { motion } from "framer-motion";
 import { AiFillRocket } from "react-icons/ai";
 import { BsFillPaletteFill, BsStars } from "react-icons/bs";
 import { FiZap, FiStar } from "react-icons/fi";
+import Tag from "../ui/Tag";
 
 const features = [
   {
     icon: BsStars,
     title: "AI-Powered Generation",
-    desc: "Instantly generate clean React + Tailwind components with natural language.",
+    desc: "Instantly generate clean components with natural language.",
   },
   {
     icon: FiZap,
@@ -19,12 +20,12 @@ const features = [
   {
     icon: BsFillPaletteFill,
     title: "Custom Styling",
-    desc: "Easily adjust color, layout, and motion — all within one interface.",
+    desc: "Easily adjust color, layout, and motion — all within just prompts.",
   },
   {
     icon: FiStar,
     title: "Smart Suggestions",
-    desc: "Get instant improvements for UX, accessibility, and performance.",
+    desc: "Right away, get improvements for UX, accessibility, and performance.",
   },
   {
     icon: AiFillRocket,
@@ -36,7 +37,9 @@ const features = [
 export default function Features() {
   return (
     <section className="relative py-20 text-white overflow-hidden">
+      <Tag>Features</Tag>
       <div className="max-w-6xl mx-auto text-center px-6">
+        {/* Header */}
         <motion.h2
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -58,6 +61,7 @@ export default function Features() {
           Everything you need to design, generate, and deploy components
         </motion.p>
 
+        {/* Features */}
         <div className="flex-center gap-5 flex-wrap max-w-3xl mx-auto">
           {features.map((f, i) => (
             <motion.div
@@ -65,18 +69,30 @@ export default function Features() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
-              className="relative flex flex-col items-center justify-center p-8 rounded-2xl bg-[#111] border border-white/10
+              className="relative flex flex-col items-center justify-between
+                         p-4 rounded-2xl bg-[#111] border border-white/10
                          size-60
                          shadow-[0_-4px_15px_-8px_#ec4899,0_-4px_15px_-8px_#a855f7]
                          hover:shadow-[0_-8px_25px_-6px_#ec4899,0_-8px_25px_-6px_#a855f7]
                          hover:border-pink-400/40
                          transition-all duration-300 backdrop-blur-sm"
             >
-              <div className="flex items-center justify-center mb-4">
-                <f.icon className="w-8 h-8 text-pink-400" />
+              {/* Icon Section (1/3 height) */}
+              <div className="flex items-center justify-center h-1/3 mt-3">
+                <div
+                  className="flex-center rounded-full w-16 h-16
+                             shadow-[0_-4px_15px_-8px_#ec4899,0_-4px_15px_-8px_#a855f7]
+                             transition-all duration-300"
+                >
+                  <f.icon className="w-8 h-8 text-pink-400" />
+                </div>
               </div>
-              <h3 className="text-lg font-semibold mb-2">{f.title}</h3>
-              <p className="text-gray-400 text-sm text-center">{f.desc}</p>
+
+              {/* Text Section */}
+              <div className="flex flex-col justify-center flex-1 text-center">
+                <h3 className="text-lg font-semibold mb-2">{f.title}</h3>
+                <p className="text-gray-400 text-sm">{f.desc}</p>
+              </div>
             </motion.div>
           ))}
         </div>

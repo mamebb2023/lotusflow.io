@@ -24,13 +24,13 @@ const Footer = () => {
     <footer className="relative p-6 mt-12 border-t border-white/10">
       {/* Background Glow */}
       <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
+        // initial={{ opacity: 0 }}
+        // whileInView={{ opacity: 1 }}
         className="absolute inset-0 -z-10 blur-[120px] bg-linear-to-r from-pink-500/90 via-purple-500/90 to-indigo-500/90"
       />
 
       {/* Container */}
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-400">
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-300">
         {/* Left - Brand + Links */}
         <div className="flex flex-col md:flex-row items-center gap-6">
           <Logo />
@@ -64,7 +64,7 @@ const Footer = () => {
       </div>
 
       {/* Bottom line */}
-      <div className="text-center text-xs text-gray-500 mt-6">
+      <div className="text-center text-xs text-gray-400 mt-6">
         © {new Date().getFullYear()} LotusFlow. All rights reserved.
       </div>
     </footer>
