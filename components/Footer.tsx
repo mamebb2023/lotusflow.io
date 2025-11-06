@@ -22,7 +22,7 @@ const Footer = () => {
       <motion.div
         // initial={{ opacity: 0 }}
         // whileInView={{ opacity: 1 }}
-        className="absolute inset-0 -z-10 blur-[120px] bg-linear-to-r from-primary-light/90 via-primary-90 to-primary-dark/90"
+        className="absolute inset-0 -z-10 blur-[120px] bg-linear-to-r from-primary/90 via-primary-dark-90 to-primary-light/90"
       />
 
       {/* Container */}
