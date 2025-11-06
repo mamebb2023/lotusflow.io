@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import React, { useState } from "react";
 import Button from "../ui/Button";
 import toast from "react-hot-toast";
+import GradientText from "../ui/GradientText";
 
 const CTA = () => {
   const [email, setEmail] = useState("");
@@ -30,13 +31,14 @@ const CTA = () => {
       }
     } catch (err) {
       toast.error("Network error. Please try again later.");
+      console.log(err);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <section className="relative h-[50vh] flex items-center justify-center text-white border-t border-white/10">
+    <section className="relative h-[50vh] flex items-center justify-center text-white">
       <div className="max-w-2xl mx-auto text-center px-6">
         {/* Title */}
         <motion.h2
@@ -45,10 +47,7 @@ const CTA = () => {
           transition={{ duration: 0.6 }}
           className="text-4xl font-bold mb-3"
         >
-          Be first to try{" "}
-          <span className="text-transparent bg-clip-text bg-linear-to-r from-pink-400 to-purple-400">
-            LotusFlow
-          </span>
+          Be first to try <GradientText>LotusFlow</GradientText>
         </motion.h2>
 
         {/* Subtitle */}

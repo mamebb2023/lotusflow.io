@@ -5,6 +5,7 @@ import { AiFillRocket } from "react-icons/ai";
 import { BsFillPaletteFill, BsStars } from "react-icons/bs";
 import { FiZap, FiStar } from "react-icons/fi";
 import Tag from "../ui/Tag";
+import GradientText from "../ui/GradientText";
 
 const features = [
   {
@@ -46,10 +47,7 @@ export default function Features() {
           transition={{ duration: 0.6 }}
           className="text-4xl font-bold mb-3"
         >
-          Build Faster with{" "}
-          <span className="text-transparent bg-clip-text bg-linear-to-r from-pink-400 to-purple-400">
-            LotusFlow
-          </span>
+          Build Faster with <GradientText>LotusFlow</GradientText>
         </motion.h2>
 
         <motion.p

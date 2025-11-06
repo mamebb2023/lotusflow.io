@@ -2,15 +2,15 @@
 @layer theme, base, components, utilities;
 
 :root {
+  --color-primary-light: #ffb8fa;
   --color-primary: #f6339a;
-  --color-secondary: #6a4170;
-  --color-secondary-dark: #1b001d;
+  --color-primary-dark: #5c1037;
 }
 
 @theme inline {
+  --color-primary-light: var(--color-primary-light);
   --color-primary: var(--color-primary);
-  --color-secondary: var(--color-secondary);
-  --color-secondary-dark: var(--color-secondary-dark);
+  --color-primary-dark: var(--color-primary-dark);
 }
 
 @layer utilities {
@@ -24,10 +24,10 @@
     @apply flex items-center justify-center;
   }
   .gradient-text {
-    @apply bg-clip-text bg-linear-to-r from-primary via-secondary to-tertiary text-transparent;
+    @apply bg-clip-text text-transparent bg-linear-to-r from-primary-light via-primary to-primary-dark;
   }
   .gradient-background {
-    @apply bg-linear-to-r from-primary via-secondary to-tertiary;
+    @apply bg-linear-to-r from-primary-light via-primary to-primary-dark;
   }
 }
 

@@ -55,7 +55,7 @@ const Hero = () => {
           <p className="text-white text-2xl font-semibold">LotusFlow</p>
         </div>
 
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-pink-300">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-primary-light">
           Craft Your{" "}
           <ReactTyped
             strings={[

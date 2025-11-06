@@ -6,6 +6,7 @@ import { FiMenu, FiX } from "react-icons/fi";
 import Logo from "./ui/Logo";
 import Button from "./ui/Button";
 import { AnimatePresence, motion } from "framer-motion";
+import { links } from "@/constants";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -14,16 +15,9 @@ export default function Header() {
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll);
+
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  // 🔹 Navigation data arrays
-  const navLinks = [
-    { href: "#features", label: "Features" },
-    { href: "#pricing", label: "Pricing" },
-    { href: "#docs", label: "Docs" },
-    { href: "#company", label: "Company" },
-  ];
 
   const mobileActions = [
     { href: "/build", label: "Sign up", variant: "ghost" },
@@ -32,7 +26,7 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 text- ${
         scrolled ? "backdrop-blur-sm shadow-sm" : "bg-transparent"
       }`}
     >
@@ -40,7 +34,7 @@ export default function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-6 text-sm w-[33%]">
-            {navLinks.map((link) => (
+            {links.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -92,15 +86,6 @@ export default function Header() {
             transition={{ ease: "easeInOut" }}
             className="fixed top-0 w-full h-screen md:hidden flex justify-end bg-black/80 backdrop-blur-sm shadow-sm"
           >
-            {/* <div className="absolute left-0 bottom-40">
-              <Image
-                src="/lotusflow-logo-squasre.png"
-                alt="Lotus"
-                width={150}
-                height={150}
-                className="opacity-30"
-              />
-            </div> */}
             <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
@@ -117,7 +102,7 @@ export default function Header() {
 
               {/* Mobile Links */}
               <div className="flex flex-col gap-2">
-                {navLinks.map((link) => (
+                {links.map((link) => (
                   <Button
                     key={link.href}
                     variant="ghost"
