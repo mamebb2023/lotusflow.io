@@ -16,7 +16,7 @@ const features = [
   {
     icon: FiZap,
     title: "Live Preview",
-    desc: "See real-time updates as you tweak your code and design.",
+    desc: "See real-time updates as you tweak your code and design with just prompts.",
   },
   {
     icon: BsFillPaletteFill,
@@ -37,7 +37,10 @@ const features = [
 
 export default function Features() {
   return (
-    <section className="relative py-20 text-white overflow-hidden">
+    <section
+      id="features"
+      className="relative py-20 text-white overflow-hidden"
+    >
       <Tag>Features</Tag>
       <div className="max-w-6xl mx-auto text-center px-6">
         {/* Header */}
@@ -68,28 +71,30 @@ export default function Features() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
               className="relative flex flex-col items-center justify-between
-                         p-4 rounded-2xl bg-[#111] border border-white/10
-                         size-60
+                         p-2 md:p-4 rounded-2xl bg-[#111] border border-white/10
+                         size-44 md:size-60
                          shadow-[0_-4px_15px_-8px_#ec4899,0_-4px_15px_-8px_#a855f7]
                          hover:shadow-[0_-8px_25px_-6px_#ec4899,0_-8px_25px_-6px_#a855f7]
                          hover:border-pink-400/40
                          transition-all duration-300 backdrop-blur-sm"
             >
               {/* Icon Section (1/3 height) */}
-              <div className="flex items-center justify-center h-1/3 mt-3">
+              <div className="flex items-center justify-center h-auto md:h-1/3 mt-3">
                 <div
-                  className="flex-center rounded-full w-16 h-16
+                  className="flex-center rounded-full size-14 md:size-16
                              shadow-[0_-4px_15px_-8px_#ec4899,0_-4px_15px_-8px_#a855f7]
                              transition-all duration-300"
                 >
-                  <f.icon className="w-8 h-8 text-pink-400" />
+                  <f.icon className="size-6 md:size-8 text-pink-400" />
                 </div>
               </div>
 
               {/* Text Section */}
               <div className="flex flex-col justify-center flex-1 text-center">
-                <h3 className="text-lg font-semibold mb-2">{f.title}</h3>
-                <p className="text-gray-400 text-sm">{f.desc}</p>
+                <h3 className="text-sm md:text-lg font-semibold mb-2">
+                  {f.title}
+                </h3>
+                <p className="text-gray-400 text-xs md:text-sm">{f.desc}</p>
               </div>
             </motion.div>
           ))}

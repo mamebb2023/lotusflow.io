@@ -1,3 +1,5 @@
+// app/(root)/(pages)/layout.tsx
+
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ReactLenis from "lenis/react";

@@ -7,7 +7,9 @@ import Logo from "@/components/ui/Logo";
 import Loading from "@/components/ui/Loading";
 import { FiZap, FiSend } from "react-icons/fi";
 import { TbLayoutSidebarLeftCollapse } from "react-icons/tb";
-import { RiSparklingFill } from "react-icons/ri";
+// import { RiSparklingFill } from "react-icons/ri";
+import Link from "next/link";
+import Lotus from "../ui/Lotus";
 
 interface Message {
   role: "user" | "assistant";
@@ -39,23 +41,24 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
 }) => {
   return (
     <motion.div
-      animate={{ width: collapsed ? "50px" : "400px" }}
-      transition={{ duration: 0.3 }}
-      className="bg-[#151515] flex flex-col p-2 gap-4 max-w-[400px] overflow-y-hidden"
+      transition={{ duration: 0.3, delay: collapsed ? 0.15 : 0 }}
+      className={`bg-[#151515] flex flex-col p-2 gap-4 overflow-y-hidden transition-all max-h-[40vh] md:max-h-full ${
+        collapsed ? "w-[50px]" : "md:w-[400px]"
+      }`}
     >
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="items-center justify-between hidden md:flex">
         <AnimatePresence>
           {!collapsed && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
             >
-              <div className="flex gap-2 scale-90">
+              <Link href="/" className="flex gap-2 scale-90">
                 <Logo />
-                <p className="text-white text-2xl font-semibold">LotusFlow</p>
-              </div>
+              </Link>
             </motion.div>
           )}
         </AnimatePresence>
@@ -77,23 +80,27 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
       {/* Messages / Examples */}
       <motion.div
         animate={{ opacity: collapsed ? 0 : 1 }}
-        transition={{ duration: 0.25 }}
+        transition={{
+          duration: 0.15,
+          delay: collapsed ? 0 : 0.15,
+        }}
         className={`flex-1 overflow-y-auto overflow-x-hidden flex flex-col gap-2 p-2 ${
           collapsed ? "pointer-events-none" : ""
         }`}
         style={{ minHeight: 0 }}
       >
         {messages.length === 0 && !loading ? (
-          <div className="flex flex-col items-center justify-center h-full text-center px-4">
+          <div className="md:flex flex-col items-center justify-center h-full text-center px-4 hidden">
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.5 }}
-              className="mb-4"
+              className="h-12 mb-4"
             >
-              <div className="w-16 h-16 bg-linear-to-br from-pink-500 to-purple-600 rounded-2xl flex items-center justify-center mb-4">
+              {/* <div className="w-16 h-16 bg-linear-to-br from-pink-500 to-purple-600 rounded-2xl flex items-center justify-center mb-4">
                 <RiSparklingFill className="text-white text-3xl" />
-              </div>
+              </div> */}
+              <Lotus size="h-12 w-8" animatePetals={false} />
             </motion.div>
 
             <h2 className="text-white text-xl font-semibold mb-2">
@@ -157,7 +164,10 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
       {/* Input */}
       <motion.div
         animate={{ opacity: collapsed ? 0 : 1 }}
-        transition={{ duration: 0.25 }}
+        transition={{
+          duration: 0.15,
+          delay: collapsed ? 0 : 0.15,
+        }}
       >
         <div className="bg-[#1e1e1e]/90 border border-pink-300 rounded-2xl p-1">
           <div className="flex flex-col">

@@ -9,6 +9,8 @@ import { MdOutlineMonitor } from "react-icons/md";
 import { useSearchParams } from "next/navigation";
 import Code from "@/components/build/Code";
 import ChatSidebar from "@/components/build/ChatSidebar";
+import { FaUser } from "react-icons/fa6";
+import Lotus from "@/components/ui/Lotus";
 
 // Separate component that uses useSearchParams
 const BuildPageContent = () => {
@@ -82,7 +84,7 @@ const BuildPageContent = () => {
 
   const handleSend = async () => {
     if (!input.trim()) return;
-    setGeneratedCode("");
+    // setGeneratedCode("");
 
     const userMsg: { role: "user" | "assistant"; text: string } = {
       role: "user",
@@ -126,7 +128,7 @@ const BuildPageContent = () => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="flex h-screen overflow-hidden"
+      className="flex flex-col-reverse md:flex-row h-screen overflow-hidden"
     >
       {/* Left Section - Chat */}
       <ChatSidebar
@@ -145,20 +147,25 @@ const BuildPageContent = () => {
       <div className="flex-1 flex flex-col">
         {/* Tabs */}
         <div className="bg-[#151515] p-2 flex items-center justify-between text-sm">
+          <div className="flex-center md:hidden">
+            <Lotus size="h-6 w-4" animatePetals={false} />
+          </div>
+
           <div className="flex gap-2">
             {tabs.map((tab) => (
               <Button
                 key={tab.id}
                 variant={activeTab === tab.id ? "outline" : "ghost"}
                 onClick={() => setActiveTab(tab.id)}
-                className="py-1! gap-2"
+                className="py-1! gap-3!"
               >
-                <tab.icon size={16} />
-                {tab.label}
+                <tab.icon size={16} /> {tab.label}
               </Button>
             ))}
           </div>
-          profile
+          <Button variant="ghost">
+            <FaUser />
+          </Button>
         </div>
 
         {/* Content */}

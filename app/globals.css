@@ -42,7 +42,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: rgb(106, 65, 112) !important;
+  background-color: #ff71f6 !important;
   opacity: 0.3;
   border-radius: 4px;
 }
