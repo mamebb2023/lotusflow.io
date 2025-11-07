@@ -20,12 +20,15 @@ export default function Header() {
   }, []);
 
   const mobileActions = [
-    { href: "/build", label: "Sign up", variant: "ghost" },
+    { href: "/login", label: "Sign up", variant: "ghost" },
     { href: "/build", label: "Try for free", variant: "solid" },
   ];
 
   return (
-    <header
+    <motion.header
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 1.5 }}
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 text- ${
         scrolled ? "backdrop-blur-sm shadow-sm" : "bg-transparent"
       }`}
@@ -149,6 +152,6 @@ export default function Header() {
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </motion.header>
   );
 }

@@ -46,9 +46,9 @@ const plans = [
 
 export default function Pricing() {
   return (
-    <section className="relative py-24 text-white overflow-hidden">
+    <section id="pricing" className="relative py-24 text-white overflow-hidden">
       {/* Background Glow */}
-      <div className="absolute inset-0 z-10 backgrop-blur-[120px] bg-linear-to-r from-primary/10 via-primary-dark/20 to-transparent flex-center">
+      <div className="absolute inset-0 z-10 backgrop-blur-[120px] bg-linear-to-t from-primary/10 via-primary-dark/20 to-transparent flex-center">
         <p className="text-center text-3xl">
           We are at pre-launch stage.
           <br /> Pricing will be integraded soon.
@@ -88,7 +88,7 @@ export default function Pricing() {
                 ${
                   plan.highlighted
                     ? "border-pink-400/40 shadow-[0_-8px_25px_-6px_#ec4899,0_-8px_25px_-6px_#a855f7]"
-                    : "border-white/10 shadow-[0_-4px_15px_-8px_#ec4899,0_-4px_15px_-8px_#a855f7]"
+                    : "border-white/10 shadow-[0_-4px_15px_-8px_#ec4899,0_-4px_15px_-8px_#a855f7] hidden md:flex"
                 } transition-all duration-300 hover:shadow-[0_-8px_25px_-6px_#ec4899,0_-8px_25px_-6px_#a855f7]`}
             >
               <div>

@@ -55,7 +55,8 @@ const Hero = () => {
           <p className="text-white text-2xl font-semibold">LotusFlow</p>
         </div>
 
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-primary-light">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold bg-gradient-to-primary-light text-pink-300">
+          {/* <GradientText> */}
           Craft Your{" "}
           <ReactTyped
             strings={[
@@ -72,7 +73,9 @@ const Hero = () => {
             backDelay={3000}
             loop
           />
+          {/* </GradientText> */}
         </h1>
+
         <p className="text-gray-200 text-md md:text-lg max-w-xl text-center">
           Create your custom, beautiful single components effortlessly <br />{" "}
           Then just copy & paste it

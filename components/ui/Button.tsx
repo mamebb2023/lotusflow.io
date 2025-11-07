@@ -40,7 +40,7 @@ const Button: React.FC<ButtonProps> = ({
         className
       )}
       style={
-        variant !== "outline"
+        variant === "default" && !isDisabled
           ? { boxShadow: "0 -3px 10px -1px white inset" }
           : {}
       }
