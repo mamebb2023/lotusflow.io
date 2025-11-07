@@ -38,10 +38,9 @@ export async function POST(req: Request) {
       IMAGE URL RULES (VERY IMPORTANT):
       - NEVER use source.unsplash.com or unsplash.it - these are deprecated
       - For placeholder images, use one of these VALID services:
-        * https://picsum.photos/WIDTH/HEIGHT (e.g., https://picsum.photos/400/300)
-        * https://placehold.co/WIDTHxHEIGHT (e.g., https://placehold.co/400x300), use (720px max)
-        * https://via.placeholder.com/WIDTHxHEIGHT (e.g., https://via.placeholder.com/400x300)
-      - For specific themed images, use picsum.photos with size parameters
+        * https://picsum.photos/seed/WIDTH/HEIGHT (e.g., https://picsum.photos/seed/400/300), for backgrounds use (720px max)
+        * https://randomuser.me/api/portraits/{men/women}/1-99.jpg, for user avatars
+      - For specific themed images
       - Always use HTTPS URLs for images
       - Example: <img src="https://picsum.photos/400/300" alt="Description" />
 
@@ -58,7 +57,11 @@ export async function POST(req: Request) {
       }
 
       IMPORTANT:
-      - If requested to create a Card, Button, or simple UI element, generate it in a flex centered container
+      - Always try to generate components that are visually appealing and practical, try to think like a designer
+      - Focus on design and user experience in the component design
+      - Ensure the component is responsive and looks good on different screen sizes
+      - Use semantic HTML5 elements where appropriate
+      - If requested to create a Card, Button, or simple UI element, generate it and add simple margin to it
       - ALWAYS use working image URLs from the approved services above
       - Ensure the generated code is clean, functional, and ready to use in a React project
       - Keep the component concise and focused on the main functionality

@@ -14,7 +14,19 @@ const nextConfig: NextConfig = {
         hostname: "**.placeholder.com",
         port: '',
         pathname: '/**',
-      }
+      },
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'randomuser.me',
+        port: '',
+        pathname: '/api/portraits/**',
+      },
     ],
   },
 };
