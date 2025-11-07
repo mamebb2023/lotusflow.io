@@ -147,7 +147,7 @@ const BuildPageContent = () => {
       <div className="flex-1 flex flex-col">
         {/* Tabs */}
         <div className="bg-[#151515] p-2 flex items-center justify-between text-sm">
-          <div className="flex-center md:hidden">
+          <div className="flex items-center md:hidden">
             <Lotus size="h-6 w-4" animatePetals={false} />
           </div>
 
