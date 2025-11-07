@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import { FaCheck } from "react-icons/fa";
 import Tag from "../ui/Tag";
+import Link from "next/link";
+import Button from "../ui/Button";
 
 const plans = [
   {
@@ -53,6 +55,11 @@ export default function Pricing() {
           We are at pre-launch stage.
           <br /> Pricing will be integraded soon.
         </p>
+        <div className="flex-center">
+          <Link href="/build">
+            <Button>Try Now</Button>
+          </Link>
+        </div>
       </div>
       <Tag>Pricing</Tag>
 

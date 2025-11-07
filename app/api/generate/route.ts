@@ -61,7 +61,8 @@ export async function POST(req: Request) {
       - Focus on design and user experience in the component design
       - Ensure the component is responsive and looks good on different screen sizes
       - Use semantic HTML5 elements where appropriate
-      - If requested to create a Card, Button, or simple UI element, generate it and add simple margin to it
+      - If requested to create a Card, Button, or simple UI elements, generate it and add simple margin to it, no margin for big elements like heros or sectinos.
+      - Hero sections must be h-screen
       - ALWAYS use working image URLs from the approved services above
       - Ensure the generated code is clean, functional, and ready to use in a React project
       - Keep the component concise and focused on the main functionality

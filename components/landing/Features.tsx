@@ -6,6 +6,8 @@ import { BsFillPaletteFill, BsStars } from "react-icons/bs";
 import { FiZap, FiStar } from "react-icons/fi";
 import Tag from "../ui/Tag";
 import GradientText from "../ui/GradientText";
+import Button from "../ui/Button";
+import Link from "next/link";
 
 const features = [
   {
@@ -99,6 +101,11 @@ export default function Features() {
             </motion.div>
           ))}
         </div>
+      </div>
+      <div className="flex-center">
+        <Link href="/build">
+          <Button>Try for free</Button>
+        </Link>
       </div>
     </section>
   );
