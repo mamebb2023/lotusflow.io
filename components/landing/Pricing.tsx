@@ -50,7 +50,7 @@ export default function Pricing() {
   return (
     <section id="pricing" className="relative py-24 text-white overflow-hidden">
       {/* Background Glow */}
-      <div className="absolute inset-0 z-10 backgrop-blur-[120px] bg-linear-to-t from-primary/10 via-primary-dark/20 to-transparent flex-center">
+      <div className="absolute inset-0 z-10 backgrop-blur-[120px] bg-linear-to-t from-primary/10 via-primary-dark/20 to-transparent flex-center flex-col gap-4">
         <p className="text-center text-3xl">
           We are at pre-launch stage.
           <br /> Pricing will be integraded soon.

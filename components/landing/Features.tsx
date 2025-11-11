@@ -102,7 +102,7 @@ export default function Features() {
           ))}
         </div>
       </div>
-      <div className="flex-center">
+      <div className="flex-center py-4">
         <Link href="/build">
           <Button>Try for free</Button>
         </Link>
