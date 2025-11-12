@@ -4,7 +4,7 @@
 :root {
   --color-primary-light: #ffb8fa;
   --color-primary: #f6339a;
-  --color-primary-dark: #11051f;
+  --color-primary-dark: #1f0713;
 }
 
 @theme inline {
@@ -53,4 +53,19 @@
 
 ::-webkit-scrollbar-thumb:hover {
   opacity: 0.9;
+}
+
+.gradient-underline {
+  position: relative;
+}
+
+.gradient-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 70%;
+  height: 7px;
+  background: linear-gradient(to right, var(--color-primary-light), var(--color-primary));
+  border-radius: 999px;
 }

@@ -23,12 +23,6 @@ const Texts = () => {
       },
     });
 
-    // tl.to(split.chars, {
-    //   duration: 1.5,
-    //   color: "white",
-    //   stagger: 0.5,
-    // });
-
     tl.to(split.chars, {
       duration: 1.5,
       color: "lightpink",
@@ -39,8 +33,8 @@ const Texts = () => {
   return (
     <div id="text" className="flex-center min-h-screen relative p-4">
       <h1 className="text font-bold text max-w-[500px] text-[2em] uppercase tracking-wider transition-all text-pink-500/10 text-center">
-        We’re developers and vibe coders — we just want to copy, paste, and stay
-        in full control of our projects
+        We&apos;re developers and vibe coders — we just want to copy, paste, and
+        stay in full control of your projects
       </h1>
       <div className="-z-10 flex-center blur-[100px] absolute size-[550px] opacity-50 rounded-full bg-linear-to-br from-primary to-primary-light"></div>
     </div>

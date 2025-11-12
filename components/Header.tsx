@@ -56,7 +56,7 @@ export default function Header() {
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center justify-end w-[33%]">
             <div className="flex-center gap-3">
-              <Link href="/" className="text-sm">
+              <Link href="/login" className="text-sm">
                 <Button variant="ghost">Login</Button>
               </Link>
               <Link href="/build">

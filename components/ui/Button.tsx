@@ -47,7 +47,9 @@ const Button: React.FC<ButtonProps> = ({
       disabled={isDisabled}
       {...props}
     >
-      <div className="flex-center">{loading ? <Loading /> : children}</div>
+      <div className="flex-center gap-2">
+        {loading ? <Loading /> : children}
+      </div>
     </button>
   );
 };
