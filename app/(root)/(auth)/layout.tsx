@@ -13,7 +13,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
       <div className="relative flex-1 hidden md:flex items-center justify-end">
         <div className="absolute">
-          <Lotus animatePetals={false} />
+          <Lotus />
         </div>
       </div>
     </div>
