@@ -13,9 +13,8 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll);
-
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
@@ -29,129 +28,139 @@ export default function Header() {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 1.5 }}
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 text- ${
-        scrolled ? "backdrop-blur-sm shadow-sm" : "bg-transparent"
-      }`}
+      className="fixed top-4 left-0 w-full flex justify-center z-50 pointer-events-none"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-6 text-sm w-[33%]">
-            {links.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-white/80 hover:text-white transition"
+      {/* FLOATING NAV CONTAINER */}
+      <div
+        className={`pointer-events-auto transition-all border duration-500 ${
+          scrolled
+            ? "max-w-4xl w-[90%] bg-black/40 border-white/10 rounded-2xl backdrop-blur-md shadow-lg"
+            : "w-full max-w-6xl bg-transparent border-transparent rounded-none backdrop-blur-0 shadow-none"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex items-center gap-6 text-sm w-[33%]">
+              {links.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-white/80 hover:text-white transition"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+
+            {/* Logo */}
+            <Link href="/" className="relative flex-center w-[33%]">
+              <Logo />
+            </Link>
+
+            {/* Desktop Buttons */}
+            <div className="hidden md:flex items-center justify-end w-[33%]">
+              <div className="flex-center gap-3">
+                <Link href="/login" className="text-sm">
+                  <Button variant="ghost">Login</Button>
+                </Link>
+                <Link href="/build">
+                  <Button>Try for free</Button>
+                </Link>
+              </div>
+            </div>
+
+            {/* Mobile */}
+            <div className="md:hidden flex items-center">
+              <Button
+                onClick={() => setMobileOpen((v) => !v)}
+                aria-label="Toggle menu"
+                className="px-2!"
+                variant="ghost"
               >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
-
-          {/* Logo Center */}
-          <Link href="/" className="relative flex-center w-[33%]">
-            <Logo />
-          </Link>
-
-          {/* Desktop Actions */}
-          <div className="hidden md:flex items-center justify-end w-[33%]">
-            <div className="flex-center gap-3">
-              <Link href="/login" className="text-sm">
-                <Button variant="ghost">Login</Button>
-              </Link>
-              <Link href="/build">
-                <Button>Try for free</Button>
-              </Link>
+                <FiMenu size={24} />
+              </Button>
             </div>
           </div>
-
-          {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center">
-            <Button
-              onClick={() => setMobileOpen((v) => !v)}
-              aria-label="Toggle menu"
-              className="px-2!"
-              variant="ghost"
-            >
-              <FiMenu size={24} />
-            </Button>
-          </div>
         </div>
-      </div>
 
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ ease: "easeInOut" }}
-            className="fixed top-0 w-full h-screen md:hidden flex justify-end bg-black/80 backdrop-blur-sm shadow-sm"
-          >
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {mobileOpen && (
             <motion.div
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              className="flex flex-col justify-between min-w-1/2 p-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ ease: "easeInOut" }}
+              className="fixed top-0 w-full h-screen md:hidden flex justify-end bg-black/80 backdrop-blur-sm shadow-sm z-60"
             >
-              <Button
-                variant="ghost"
-                className="self-end px-2!"
-                onClick={() => setMobileOpen(false)}
+              <motion.div
+                initial={{ x: "100%" }}
+                animate={{ x: 0 }}
+                exit={{ x: "100%" }}
+                className="flex flex-col justify-between min-w-1/2 p-4"
               >
-                <FiX size={24} />
-              </Button>
+                <Button
+                  variant="ghost"
+                  className="self-end px-2!"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  <FiX size={24} />
+                </Button>
 
-              {/* Mobile Links */}
-              <div className="flex flex-col gap-2">
-                {links.map((link) => (
-                  <Button
-                    key={link.href}
-                    variant="ghost"
-                    className="py-1! justify-start!"
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    <Link href={link.href} className="block text-white/90 py-2">
-                      {link.label}
-                    </Link>
-                  </Button>
-                ))}
-              </div>
-
-              {/* Mobile Actions */}
-              <div className="pt-2 border-t border-white/5">
-                {mobileActions.map((action) =>
-                  action.variant === "solid" ? (
-                    <Link
-                      key={action.href}
-                      href={action.href}
-                      className="block mt-2 py-2 font-semibold bg-white text-black rounded-md text-center"
-                      onClick={() => setMobileOpen(false)}
-                    >
-                      {action.label}
-                    </Link>
-                  ) : (
+                {/* Mobile Links */}
+                <div className="flex flex-col gap-2">
+                  {links.map((link) => (
                     <Button
-                      key={action.href}
+                      key={link.href}
                       variant="ghost"
                       className="py-1! justify-start!"
                       onClick={() => setMobileOpen(false)}
                     >
                       <Link
+                        href={link.href}
+                        className="block text-white/90 py-2"
+                      >
+                        {link.label}
+                      </Link>
+                    </Button>
+                  ))}
+                </div>
+
+                {/* Mobile Actions */}
+                <div className="pt-2 border-t border-white/5">
+                  {mobileActions.map((action) =>
+                    action.variant === "solid" ? (
+                      <Link
+                        key={action.href}
                         href={action.href}
-                        className="block py-2 text-white/90"
+                        className="block mt-2 py-2 font-semibold bg-white text-black rounded-md text-center"
+                        onClick={() => setMobileOpen(false)}
                       >
                         {action.label}
                       </Link>
-                    </Button>
-                  )
-                )}
-              </div>
+                    ) : (
+                      <Button
+                        key={action.href}
+                        variant="ghost"
+                        className="py-1! justify-start!"
+                        onClick={() => setMobileOpen(false)}
+                      >
+                        <Link
+                          href={action.href}
+                          className="block py-2 text-white/90"
+                        >
+                          {action.label}
+                        </Link>
+                      </Button>
+                    )
+                  )}
+                </div>
+              </motion.div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>
+      </div>
     </motion.header>
   );
 }

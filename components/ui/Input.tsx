@@ -4,21 +4,23 @@ import React, { useState } from "react";
 import { LuEye, LuEyeClosed } from "react-icons/lu";
 
 interface InputProps {
-  label: string;
+  label?: string;
   type?: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   error?: string;
   placeholder?: string;
+  required?: boolean;
 }
 
 export const Input: React.FC<InputProps> = ({
-  label,
+  label = "",
   type = "text",
   value,
   onChange,
   error,
   placeholder,
+  required = false,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -34,6 +36,7 @@ export const Input: React.FC<InputProps> = ({
           value={value}
           onChange={onChange}
           placeholder={placeholder}
+          required={required}
           className={`min-w-[300px] w-full px-4 py-2 rounded-xl border transition-all duration-200 
           ${
             error ? "border-red-500" : "border-zinc-700 focus:border-purple-500"
