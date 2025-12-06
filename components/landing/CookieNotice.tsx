@@ -4,22 +4,22 @@ import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 
 const CookieNotice = () => {
-  const [open, setOpen] = useState<boolean>(() => {
-    // Guard for environments where window/localStorage may not be available
+  // Lazy initialization - only runs once on mount
+  const [shouldShow, setShouldShow] = useState(() => {
     if (typeof window === "undefined") return false;
-    const hasAccepted = localStorage.getItem("lotus_cookie_notice");
-    return !hasAccepted;
+    const accepted = localStorage.getItem("lotus_cookie_notice");
+    return !accepted;
   });
 
   const acceptCookies = () => {
     localStorage.setItem("lotus_cookie_notice", "true");
-    setOpen(false);
+    setShouldShow(false);
   };
 
-  if (!open) return null;
+  if (!shouldShow) return null;
 
   return (
-    <div className="fixed bottom-4 left-4 bg-[#111] border border-white/10 text-gray-300 text-sm p-4 rounded-xl max-w-xs shadow-lg z-998 animate-fade-in">
+    <div className="fixed bottom-4 left-4 bg-[#111] border border-white/10 text-gray-300 text-sm p-4 rounded-xl max-w-xs shadow-lg z-998">
       <p>
         We use cookies to enhance your experience and understand how LotusFlow
         is used.
@@ -36,6 +36,7 @@ const CookieNotice = () => {
         <button
           onClick={acceptCookies}
           className="text-gray-400 hover:text-white"
+          aria-label="Close cookie notice"
         >
           <IoClose size={18} />
         </button>
