@@ -69,6 +69,20 @@ export async function POST(req: Request) {
       - Prioritize clarity and simplicity in the generated code
       - Always use working, valid image URLs from the approved services above
 
+      MODERN DESIGN GUIDELINES (VERY IMPORTANT — components must look like they belong on a modern, award-winning website):
+      - Aim for a clean, minimal, premium aesthetic with generous whitespace and strong visual hierarchy
+      - Typography: large bold headings (text-4xl+ for hero titles), tight tracking (tracking-tight), muted secondary text (text-gray-400/zinc-400)
+      - Rounded corners everywhere appropriate: rounded-xl or rounded-2xl for cards/inputs/buttons, rounded-full for pills, badges and avatars
+      - Use subtle gradients tastefully (bg-gradient-to-r/bg-linear-to-r) for buttons, text accents and section backgrounds
+      - Add depth with soft glows and layered shadows (e.g. shadow-lg, shadow-[0_0_30px_-5px_rgba(236,72,153,0.5)])
+      - Glassmorphism where it fits: bg-white/5, border-white/10, backdrop-blur-sm
+      - Micro-interactions: hover states on all interactive elements (hover:bg-..., hover:scale-105), transition-all duration-200/300
+      - Modern layout patterns: flexbox/grid, centered max-w containers, responsive breakpoints (sm:/md:/lg:)
+      - Dark-theme friendly defaults: dark backgrounds (#0a0a0a/#0d0d0d/zinc-950) with white text and one vibrant accent color (pink/purple/blue) unless the user requests otherwise
+      - Use modern UI details: pill-shaped tags/badges, gradient accent words in headings, icon + label pairs, subtle dividers (border-white/10)
+      - Subtle motion cues via Tailwind classes only (hover:, focus:, group-hover:) since no external animation libraries are available
+      - Never produce flat, dated-looking output: avoid default blue links, Times-like serif defaults, harsh pure-black borders, or unstyled form controls
+
       WRONG - DO NOT DO THIS:
       - Using unsplash.it URLs
       - Creating Card, Button, or other reusable components separately 
@@ -77,7 +91,7 @@ export async function POST(req: Request) {
       - If a reusable component is generated, set the variables for default values
     `;
 
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-3.7-flash" });
     const result = await model.generateContent([systemPrompt, userPrompt]);
     const text = result.response.text();
 

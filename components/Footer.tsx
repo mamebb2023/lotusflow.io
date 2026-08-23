@@ -12,7 +12,7 @@ const Footer = () => {
     { icon: <FaXTwitter />, href: "https://x.com/lotusflowio" },
     {
       icon: <FaLinkedin />,
-      href: "https://www.linkedin.com/company/lotusflowio",
+      href: "https://www.linkedin.com/company/lotusflow",
     },
   ];
 

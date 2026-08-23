@@ -1,10 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { FaCheck } from "react-icons/fa";
+import toast from "react-hot-toast";
 import Tag from "../ui/Tag";
 import Link from "next/link";
 import Button from "../ui/Button";
+import GradientText from "../ui/GradientText";
+import { Input } from "../ui/Input";
 
 const plans = [
   {
@@ -47,16 +51,78 @@ const plans = [
 ];
 
 export default function Pricing() {
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [joined, setJoined] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        toast.success("You're on the list!");
+        setEmail("");
+        setJoined(true);
+      } else {
+        toast.error(data.error || "Something went wrong.");
+      }
+    } catch (err) {
+      toast.error("Network error");
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <section id="pricing" className="relative py-24 text-white overflow-hidden">
-      <div className="absolute inset-0 z-10 backgrop-blur-[120px] bg-linear-to-t from-primary/10 via-primary-dark/20 to-transparent flex-center flex-col gap-4">
+      <div className="absolute inset-0 z-10 backgrop-blur-[120px] bg-linear-to-t from-primary/10 via-primary-dark/20 to-transparent flex-center flex-col gap-4 px-6">
         <p className="text-center text-3xl">
           We are at pre-launch stage.
-          <br /> Pricing will be integraded soon.
+          <br /> Pricing will be integrated soon.
         </p>
-        <div className="flex-center">
+
+        <div className="text-center max-w-lg">
+          <p className="text-gray-400 mb-4">
+            Want <GradientText>early access</GradientText>? Join our pre-launch
+            list and be one of the first to try the AI component generator.
+          </p>
+
+          {joined ? (
+            <p className="text-sm text-pink-400 font-medium">
+              You&apos;re on the list — we&apos;ll let you know when we launch!
+            </p>
+          ) : (
+            <form
+              onSubmit={handleSubmit}
+              className="flex flex-col sm:flex-row gap-3 justify-center items-center"
+            >
+              <Input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <Button type="submit" loading={loading}>
+                Join Now
+              </Button>
+            </form>
+          )}
+        </div>
+
+        <div className="flex-center mt-2">
           <Link href="/build">
-            <Button>Try Now</Button>
+            <Button variant="outline">Try Now</Button>
           </Link>
         </div>
       </div>

@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import GradientText from "../ui/GradientText";
 import Button from "../ui/Button";
-import { FiZap, FiCpu } from "react-icons/fi";
+import { FiZap, FiCpu, FiCopy, FiCode, FiStar } from "react-icons/fi";
 
 const CTA = () => {
   return (
@@ -24,28 +24,18 @@ const CTA = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="text-gray-400 mb-6 text-lg"
+          className="text-gray-400 mb-4 text-lg"
         >
           Generate production-ready React components, preview instantly, and
           accelerate your workflow with AI.
         </motion.p>
-
-        {/* Button */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="flex-center"
-        >
-          <Button>Explore LotusFlow</Button>
-        </motion.div>
 
         {/* Small Tags */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
-          className="flex justify-center gap-3 mb-10"
+          className="flex flex-wrap justify-center gap-3 mb-4"
         >
           {/* Tag 1 */}
           <div className="flex items-center gap-2 text-xs bg-white/5 border border-white/10 px-3 py-1 rounded-full backdrop-blur-sm">
@@ -58,6 +48,34 @@ const CTA = () => {
             <FiCpu className="text-pink-400" size={14} />
             <span>Instant Live Preview</span>
           </div>
+
+          {/* Tag 3 */}
+          <div className="flex items-center gap-2 text-xs bg-white/5 border border-white/10 px-3 py-1 rounded-full backdrop-blur-sm">
+            <FiCopy className="text-pink-400" size={14} />
+            <span>Copy &amp; Paste Ready</span>
+          </div>
+
+          {/* Tag 4 */}
+          <div className="flex items-center gap-2 text-xs bg-white/5 border border-white/10 px-3 py-1 rounded-full backdrop-blur-sm">
+            <FiCode className="text-pink-400" size={14} />
+            <span>React + Tailwind</span>
+          </div>
+
+          {/* Tag 5 */}
+          <div className="flex items-center gap-2 text-xs bg-white/5 border border-white/10 px-3 py-1 rounded-full backdrop-blur-sm">
+            <FiStar className="text-pink-400" size={14} />
+            <span>Beautiful by Default</span>
+          </div>
+        </motion.div>
+
+        {/* Button */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="flex-center mb-10"
+        >
+          <Button>Explore LotusFlow</Button>
         </motion.div>
       </div>
     </section>

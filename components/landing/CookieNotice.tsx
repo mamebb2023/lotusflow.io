@@ -1,22 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { IoClose } from "react-icons/io5";
 
 const CookieNotice = () => {
-  // Lazy initialization - only runs once on mount
-  const [shouldShow, setShouldShow] = useState(() => {
-    if (typeof window === "undefined") return false;
+  const [shouldShow, setShouldShow] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
     const accepted = localStorage.getItem("lotus_cookie_notice");
-    return !accepted;
-  });
+    if (!accepted) {
+      setShouldShow(true);
+    }
+  }, []);
 
   const acceptCookies = () => {
     localStorage.setItem("lotus_cookie_notice", "true");
     setShouldShow(false);
   };
 
-  if (!shouldShow) return null;
+  if (!mounted || !shouldShow) return null;
 
   return (
     <div className="fixed bottom-4 left-4 bg-[#111] border border-white/10 text-gray-300 text-sm p-4 rounded-xl max-w-xs shadow-lg z-998">

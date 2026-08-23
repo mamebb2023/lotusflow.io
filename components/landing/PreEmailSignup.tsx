@@ -21,8 +21,9 @@ const PreEmailSignup = () => {
 
     const handleScroll = () => {
       if (window.scrollY > 600) {
-        setShowOverlay(true);
+        window.removeEventListener("scroll", handleScroll);
         localStorage.setItem("lotus_prelaunch_seen", "true"); // save immediately
+        setShowOverlay(true);
       }
     };
 

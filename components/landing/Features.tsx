@@ -72,7 +72,7 @@ export default function Features() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
-              className="relative flex flex-col items-center justify-between
+              className="group relative flex flex-col items-center justify-between
                          p-2 md:p-4 rounded-2xl bg-[#111] border border-white/10
                          size-44 md:size-60
                          shadow-[0_-4px_15px_-8px_#ec4899,0_-4px_15px_-8px_#a855f7]
@@ -85,6 +85,7 @@ export default function Features() {
                 <div
                   className="flex-center rounded-full size-14 md:size-16
                              shadow-[0_-4px_15px_-8px_#ec4899,0_-4px_15px_-8px_#a855f7]
+                             group-hover:shadow-[0_0px_25px_-6px_#ec4899,0_-8px_25px_-6px_#a855f7]
                              transition-all duration-300"
                 >
                   <f.icon className="size-6 md:size-8 text-pink-400" />
@@ -102,7 +103,7 @@ export default function Features() {
           ))}
         </div>
       </div>
-      <div className="flex-center py-4">
+      <div className="flex-center py-4 mt-5">
         <Link href="/build">
           <Button>Try for free</Button>
         </Link>
