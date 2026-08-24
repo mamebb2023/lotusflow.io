@@ -1,7 +1,10 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { IoLogoReact } from "react-icons/io5";
+import { FiCheck, FiCopy } from "react-icons/fi";
 
 const Code = ({
   code,
@@ -10,9 +13,22 @@ const Code = ({
   code: string;
   language?: string;
 }) => {
-  // Calculate line numbers
-  const lines = code.split("\n");
-  const lineNumbers = lines.map((_, i) => i + 1);
+  const [copied, setCopied] = useState(false);
+
+  const displayCode = code.trim() || "// No code provided";
+
+  // Calculate line numbers from the exact string being displayed
+  const lineNumbers = displayCode.split("\n").map((_, i) => i + 1);
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(displayCode);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Failed to copy:", err);
+    }
+  };
 
   // Custom style to match VS Code dark theme
   const customStyle = {
@@ -20,7 +36,7 @@ const Code = ({
     padding: "12px",
     background: "#1e1e1e",
     fontSize: "14px",
-    lineHeight: "1.5",
+    lineHeight: "24px",
     fontFamily: 'Consolas, Monaco, "Courier New", monospace',
   };
 
@@ -33,6 +49,18 @@ const Code = ({
           <span>component.jsx</span>
         </div>
         <div className="flex-1 bg-[#151515]" />
+        <button
+          onClick={handleCopy}
+          disabled={!code.trim()}
+          className={`flex items-center gap-1.5 mr-3 px-2.5 py-1 rounded-md text-xs transition-all ${
+            copied
+              ? "text-green-400 bg-green-500/10"
+              : "text-gray-400 hover:text-white hover:bg-white/10"
+          } disabled:opacity-40 disabled:cursor-not-allowed`}
+        >
+          {copied ? <FiCheck size={14} /> : <FiCopy size={14} />}
+          {copied ? "Copied!" : "Copy"}
+        </button>
       </div>
 
       {/* Code Editor */}
@@ -60,7 +88,7 @@ const Code = ({
               showLineNumbers={false}
               wrapLines={true}
             >
-              {code.trim() || "// No code provided"}
+              {displayCode}
             </SyntaxHighlighter>
           </div>
         </div>

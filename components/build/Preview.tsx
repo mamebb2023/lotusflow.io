@@ -5,9 +5,10 @@ import Loading from "../ui/Loading";
 
 interface Props {
   code: string;
+  loading?: boolean;
 }
 
-export const Preview = ({ code }: Props) => {
+export const Preview = ({ code, loading = false }: Props) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [previewHtml, setPreviewHtml] = useState("");
   const [error, setError] = useState<string>("");
@@ -173,9 +174,16 @@ export const Preview = ({ code }: Props) => {
             className="w-full h-full border-0"
             sandbox="allow-scripts allow-same-origin"
           />
-        ) : (
+        ) : loading ? (
           <div className="h-full flex-center gap-2">
             <Loading /> <p>Cooking...</p>
+          </div>
+        ) : (
+          <div className="h-full flex-center text-gray-500 text-sm text-center px-4">
+            <p>
+              Nothing to preview yet — describe a component in the chat or try
+              again if the last generation failed.
+            </p>
           </div>
         )}
       </motion.div>

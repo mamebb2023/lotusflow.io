@@ -3,15 +3,77 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
+const MODELS = ["gemini-3.7-flash", "gemini-3.6-flash", "gemini-2.5-flash"];
+const MAX_ATTEMPTS_PER_MODEL = 3;
+const RETRYABLE_STATUS = [429, 500, 503];
+const RETRYABLE_CAUSES = [
+  "ECONNRESET",
+  "ETIMEDOUT",
+  "ECONNREFUSED",
+  "EAI_AGAIN",
+  "UND_ERR_CONNECT_TIMEOUT",
+];
+
+function isRetryable(err: any): boolean {
+  const status = err?.status ?? err?.error?.code;
+  if (typeof status === "number") return RETRYABLE_STATUS.includes(status);
+
+  const causeCode = err?.cause?.code ?? err?.code;
+  if (typeof causeCode === "string")
+    return RETRYABLE_CAUSES.includes(causeCode);
+
+  return /fetch failed|network|socket hang up/i.test(String(err?.message));
+}
+
+async function generateWithFallback(parts: string[]) {
+  let lastError: unknown;
+
+  for (const modelName of MODELS) {
+    const model = genAI.getGenerativeModel({ model: modelName });
+
+    for (let attempt = 0; attempt < MAX_ATTEMPTS_PER_MODEL; attempt++) {
+      try {
+        const result = await model.generateContent(parts);
+        return result.response.text();
+      } catch (err: any) {
+        lastError = err;
+        if (!isRetryable(err)) throw err;
+        console.warn(
+          `${modelName} attempt ${attempt + 1} failed (${
+            err?.status ?? err?.cause?.code ?? err?.message
+          }), retrying...`
+        );
+        await new Promise((r) => setTimeout(r, (attempt + 1) * 2000));
+      }
+    }
+    console.warn(`Falling back from ${modelName} after repeated failures`);
+  }
+
+  throw lastError;
+}
+
 export async function POST(req: Request) {
   try {
-    const { prompt, message } = await req.json();
+    const { prompt, message, history, previousCode } = await req.json();
     const userPrompt = prompt || message;
     if (!userPrompt) {
       return NextResponse.json(
         { chatMsg: "Missing prompt", code: "" },
         { status: 400 }
       );
+    }
+
+    let fullPrompt = userPrompt;
+
+    if (Array.isArray(history) && history.length > 0) {
+      const transcript = history
+        .map((m: { role: string; text: string }) => `${m.role}: ${m.text}`)
+        .join("\n");
+      fullPrompt = `CONVERSATION SO FAR:\n${transcript}\n\nNEW REQUEST:\n${userPrompt}`;
+    }
+
+    if (typeof previousCode === "string" && previousCode.trim()) {
+      fullPrompt += `\n\nCURRENT COMPONENT CODE:\n${previousCode}`;
     }
 
     const systemPrompt = `
@@ -34,6 +96,12 @@ export async function POST(req: Request) {
       - Return ONLY the JSON object (no markdown, no code fences, no commentary)
       - Use TailwindCSS for all styling
       - The "code" field must contain a complete, standalone functional component
+
+      ITERATION RULES (when CURRENT COMPONENT CODE is provided):
+      - Treat the provided code as the component to modify
+      - Apply ONLY the changes asked for in the NEW REQUEST while preserving everything else (structure, styling approach, naming)
+      - ALWAYS return the FULL updated component in the "code" field — never diffs, snippets or explanations of changes
+      - If the request conflicts with the existing design, prefer the user's latest instruction
 
       IMAGE URL RULES (VERY IMPORTANT):
       - NEVER use source.unsplash.com or unsplash.it - these are deprecated
@@ -91,9 +159,7 @@ export async function POST(req: Request) {
       - If a reusable component is generated, set the variables for default values
     `;
 
-    const model = genAI.getGenerativeModel({ model: "gemini-3.7-flash" });
-    const result = await model.generateContent([systemPrompt, userPrompt]);
-    const text = result.response.text();
+    const text = await generateWithFallback([systemPrompt, fullPrompt]);
 
     const cleaned = text.replace(/```json|```/g, "").trim();
 

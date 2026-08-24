@@ -2,8 +2,9 @@
 
 import { Preview } from "@/components/build/Preview";
 import Button from "@/components/ui/Button";
-import { AnimatePresence, motion } from "framer-motion";
-import React, { useState, useEffect, Suspense } from "react";
+import { motion } from "framer-motion";
+import React, { useState, useEffect, useRef, Suspense } from "react";
+import toast from "react-hot-toast";
 import { IoCodeSlash } from "react-icons/io5";
 import { MdOutlineMonitor } from "react-icons/md";
 import { useSearchParams } from "next/navigation";
@@ -38,10 +39,12 @@ const BuildPageContent = () => {
   ];
 
   // Handle URL prompt on component mount - run immediately
+  const hasRunFromUrl = useRef(false);
   useEffect(() => {
+    if (hasRunFromUrl.current) return;
     const urlPrompt = searchParams.get("prompt");
     if (urlPrompt) {
-      // Automatically send the prompt
+      hasRunFromUrl.current = true;
       handleSendWithPrompt(urlPrompt);
     }
   }, [searchParams]);
@@ -63,27 +66,35 @@ const BuildPageContent = () => {
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: promptText }),
+        body: JSON.stringify({
+          prompt: promptText,
+          history: messages,
+          previousCode: generatedCode,
+        }),
       });
 
       const data = await res.json();
 
-      const aiMsg: { role: "user" | "assistant"; text: string } = {
-        role: "assistant",
-        text: data.chatMsg,
-      };
+      if (!res.ok || !data.code) {
+        toast.error(data.chatMsg || "Generation failed. Please try again.");
+        return;
+      }
 
-      setMessages((prev) => [...prev, aiMsg]);
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", text: data.chatMsg },
+      ]);
       setGeneratedCode(data.code);
     } catch (err) {
       console.error(err);
+      toast.error("Network error. Please check your connection.");
     } finally {
       setLoading(false);
     }
   };
 
   const handleSend = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() || loading) return;
     // setGeneratedCode("");
 
     const userMsg: { role: "user" | "assistant"; text: string } = {
@@ -100,20 +111,28 @@ const BuildPageContent = () => {
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: currentInput }),
+        body: JSON.stringify({
+          prompt: currentInput,
+          history: messages,
+          previousCode: generatedCode,
+        }),
       });
 
       const data = await res.json();
 
-      const aiMsg: { role: "user" | "assistant"; text: string } = {
-        role: "assistant",
-        text: data.chatMsg,
-      };
+      if (!res.ok || !data.code) {
+        toast.error(data.chatMsg || "Generation failed. Please try again.");
+        return;
+      }
 
-      setMessages((prev) => [...prev, aiMsg]);
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", text: data.chatMsg },
+      ]);
       setGeneratedCode(data.code);
     } catch (err) {
       console.error(err);
+      toast.error("Network error. Please check your connection.");
     } finally {
       setLoading(false);
     }
@@ -191,19 +210,22 @@ const BuildPageContent = () => {
               </motion.div>
             </div>
           ) : (
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeTab}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.15 }}
-                className="absolute inset-0 rounded-lg overflow-hidden"
+            <>
+              <div
+                className={`absolute inset-0 rounded-lg overflow-hidden ${
+                  activeTab === "preview" ? "" : "hidden"
+                }`}
               >
-                {activeTab === "preview" && <Preview code={generatedCode} />}
-                {activeTab === "code" && <Code code={generatedCode} />}
-              </motion.div>
-            </AnimatePresence>
+                <Preview code={generatedCode} loading={loading} />
+              </div>
+              <div
+                className={`absolute inset-0 rounded-lg overflow-hidden ${
+                  activeTab === "code" ? "" : "hidden"
+                }`}
+              >
+                <Code code={generatedCode} />
+              </div>
+            </>
           )}
         </div>
       </div>

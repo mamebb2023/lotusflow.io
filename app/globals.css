@@ -38,6 +38,7 @@
 
 ::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
   padding: 3px;
 }
 
@@ -66,6 +67,10 @@
   bottom: -4px;
   width: 70%;
   height: 7px;
-  background: linear-gradient(to right, var(--color-primary-light), var(--color-primary));
+  background: linear-gradient(
+    to right,
+    var(--color-primary-light),
+    var(--color-primary)
+  );
   border-radius: 999px;
 }

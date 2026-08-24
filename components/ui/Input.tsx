@@ -39,7 +39,7 @@ export const Input: React.FC<InputProps> = ({
           required={required}
           className={`min-w-[300px] w-full px-4 py-2 rounded-xl border transition-all duration-200 
           ${
-            error ? "border-red-500" : "border-zinc-700 focus:border-purple-500"
+            error ? "border-red-500" : "border-zinc-700 focus:border-pink-500"
           }
           bg-white/10 backdrop-blur-sm text-white placeholder-zinc-400 outline-none pr-10`}
         />
